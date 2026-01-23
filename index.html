@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2 Street | Tênis & Perfumes</title>
+    <style>
+        /* Estilos Gerais - Visual Premium */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: url('fundo.jpg') repeat, url('fundo.png');
+            background-attachment: fixed;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            text-align: center;
+            border-bottom: 2px solid #1a1a1a;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            max-width: 160px;
+            height: auto;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin: 50px 0 30px;
+            color: #1a1a1a;
+            font-weight: 800;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #1a1a1a;
+            margin: 10px auto;
+        }
+
+        /* Layout do Catálogo em Imagens Grandes */
+        .vitrine {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .card-catalogo {
+            background: #fff;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 800px;
+            transition: transform 0.3s ease;
+        }
+
+        .card-catalogo:hover {
+            transform: scale(1.02);
+        }
+
+        .card-catalogo img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+
+        /* Botão flutuante do WhatsApp */
+        .btn-whatsapp {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #25d366;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+            transition: 0.3s;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #1eb954;
+            transform: translateY(-3px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            color: #555;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        /* Ajuste para Celular */
+        @media (max-width: 600px) {
+            .logo { max-width: 120px; }
+            h2 { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="logo.jpg" onerror="this.src='logo.png'" alt="B2 Street" class="logo">
+    </header>
+
+    <div class="container">
+        
+        <h2>SNEAKERS COLLECTION</h2>
+        <div class="vitrine">
+            <div class="card-catalogo">
+                <img src="ct1.jpg" onerror="this.src='ct1.png'" alt="Catálogo Tênis 1">
+            </div>
+            <div class="card-catalogo">
+                <img src="ct2.jpg" onerror="this.src='ct2.png'" alt="Catálogo Tênis 2">
+            </div>
+        </div>
+
+        <h2>PERFUMARIA PREMIUM</h2>
+        <div class="vitrine">
+            <div class="card-catalogo">
+                <img src="ct3.jpg" onerror="this.src='ct3.png'" alt="Catálogo Perfumes 1">
+            </div>
+            <div class="card-catalogo">
+                <img src="ct4.jpg" onerror="this.src='ct4.png'" alt="Catálogo Perfumes 2">
+            </div>
+        </div>
+
+    </div>
+
+    <a href="https://wa.me/5599999999999" class="btn-whatsapp" target="_blank">
+        Falar com Especialista
+    </a>
+
+    <footer>
+        &copy; 2026 B2 STREET - ESTILO E EXCLUSIVIDADE.
+    </footer>
+
+</body>
+</html>
