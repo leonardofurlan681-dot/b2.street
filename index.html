@@ -2,164 +2,326 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B2 Street | Tênis & Perfumes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Área 037 | Streetwear & Sneakers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Estilos Gerais - Visual Premium */
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: url('fundo.jpg') repeat, url('fundo.png');
-            background-attachment: fixed;
-            background-color: #f0f0f0;
+        :root {
+            --primary: #000000;
+            --accent: #ff0000;
+            --gray-light: #f4f4f4;
+            --white: #ffffff;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--white); color: var(--primary); overflow-x: hidden; }
+
+        /* HEADER */
         header {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 25px;
-            text-align: center;
-            border-bottom: 2px solid #1a1a1a;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed; top: 0; width: 100%; height: 70px;
+            background: var(--white); display: flex; align-items: center;
+            justify-content: space-between; padding: 0 5%; z-index: 1000;
+            border-bottom: 1px solid #eee;
         }
+        .header-left, .header-right { display: flex; align-items: center; gap: 20px; flex: 1; }
+        .header-right { justify-content: flex-end; }
+        
+        .logo-nav { height: 40px; } /* Logo do topo */
+        .icon-btn { font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
+        .icon-btn:hover { color: var(--accent); }
 
-        .logo {
-            max-width: 160px;
-            height: auto;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 30px auto;
+        /* HERO - LONDRES COM LOGO2.JPG */
+        .hero {
+            height: 80vh; margin-top: 70px;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('https://images.unsplash.com/photo-1529655683826-aba9b3e77383?q=80&w=1600') center/cover;
+            display: flex; align-items: center; justify-content: center; text-align: center;
             padding: 20px;
         }
-
-        h2 {
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin: 50px 0 30px;
-            color: #1a1a1a;
-            font-weight: 800;
-            position: relative;
-        }
-
-        h2::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: #1a1a1a;
-            margin: 10px auto;
-        }
-
-        /* Layout do Catálogo em Imagens Grandes */
-        .vitrine {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .card-catalogo {
-            background: #fff;
-            padding: 10px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            width: 100%;
-            max-width: 800px;
-            transition: transform 0.3s ease;
-        }
-
-        .card-catalogo:hover {
-            transform: scale(1.02);
-        }
-
-        .card-catalogo img {
-            width: 100%;
+        .hero-logo-main {
+            width: 80%; /* Ajuste para mobile */
+            max-width: 500px; /* Ajuste para desktop */
             height: auto;
-            border-radius: 8px;
-            display: block;
+            filter: drop-shadow(0px 4px 15px rgba(0,0,0,0.5)); /* Sombra para destacar do fundo */
         }
 
-        /* Botão flutuante do WhatsApp */
-        .btn-whatsapp {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background-color: #25d366;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 2000;
-            transition: 0.3s;
+        /* VITRINE */
+        .section-title { padding: 40px 5% 20px; font-size: 1.5rem; text-transform: uppercase; font-weight: 900; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; padding: 0; background: #eee; border: 1px solid #eee; }
+        
+        @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+
+        .p-card { background: white; cursor: pointer; position: relative; overflow: hidden; }
+        .p-img-box { width: 100%; aspect-ratio: 1/1; overflow: hidden; }
+        .p-img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .p-card:hover .p-img-box img { transform: scale(1.05); }
+        .p-info { padding: 15px; }
+        .p-brand { font-size: 0.7rem; color: #888; text-transform: uppercase; font-weight: 700; }
+        .p-name { font-size: 0.85rem; font-weight: 700; margin: 5px 0; height: 35px; overflow: hidden; }
+        .p-price { font-weight: 900; font-size: 1rem; }
+
+        /* MID BANNER */
+        .mid-banner { 
+            display: grid; grid-template-columns: repeat(3, 1fr); 
+            height: 250px; gap: 0; margin: 40px 0; background: black;
+        }
+        .mid-item { position: relative; overflow: hidden; }
+        .mid-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.5s; }
+        .mid-text { position: absolute; bottom: 15px; left: 15px; color: white; font-weight: 900; text-transform: uppercase; font-size: 0.7rem; }
+
+        /* MODAL / POP-UP */
+        .modal-overlay { 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); 
+            display: none; align-items: flex-end; justify-content: center; z-index: 5000;
+        }
+        .modal-content { 
+            background: white; width: 100%; border-radius: 20px 20px 0 0;
+            max-height: 90vh; overflow-y: auto; position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        @media (min-width: 768px) { 
+            .modal-overlay { align-items: center; padding: 20px; }
+            .modal-content { width: 1000px; grid-template-columns: 1.2fr 1fr; display: grid; border-radius: 0; overflow: hidden; } 
         }
 
-        .btn-whatsapp:hover {
-            background-color: #1eb954;
-            transform: translateY(-3px);
-        }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; z-index: 10; }
+        .modal-left img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-right { padding: 30px; display: flex; flex-direction: column; }
+        
+        .size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+        .size-btn { border: 1px solid #ddd; padding: 12px; text-align: center; cursor: pointer; font-size: 0.8rem; font-weight: 700; }
+        .size-btn.active { background: black; color: white; border-color: black; }
 
-        footer {
-            text-align: center;
-            padding: 50px 20px;
-            color: #555;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-        }
+        .btn-buy { background: black; color: white; padding: 18px; border: none; font-weight: 900; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
+        .btn-add { background: white; color: black; border: 1px solid black; padding: 18px; margin-top: 10px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
 
-        /* Ajuste para Celular */
-        @media (max-width: 600px) {
-            .logo { max-width: 120px; }
-            h2 { font-size: 1.2rem; }
-        }
+        /* SIDEBARS */
+        .sidebar { position: fixed; top: 0; width: 80%; max-width: 320px; height: 100%; background: white; z-index: 6000; transition: 0.4s; padding: 40px; }
+        #filterSide { left: -320px; }
+        #cartSide { right: -320px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+        .sidebar.active { transform: translateX(100%); } /* Ajuste mobile */
+        #cartSide.active { transform: translateX(-100%); }
+
+        .cart-item { display: flex; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .cart-item img { width: 60px; height: 60px; object-fit: cover; }
+
+        /* FOOTER */
+        footer { background: #000; color: white; padding: 60px 5%; text-align: center; }
+        .footer-logo { height: 40px; filter: brightness(0) invert(1); margin-bottom: 30px; }
     </style>
 </head>
 <body>
 
     <header>
-        <img src="logo.jpg" onerror="this.src='logo.png'" alt="B2 Street" class="logo">
+        <div class="header-left">
+            <i class="fas fa-bars icon-btn" onclick="toggleSidebar('filterSide')"></i>
+        </div>
+        <div class="header-center">
+            <img src="logo.jpg" alt="Área 037" class="logo-nav">
+        </div>
+        <div class="header-right">
+            <i class="fas fa-search icon-btn"></i>
+            <div style="position: relative;" onclick="toggleSidebar('cartSide')">
+                <i class="fas fa-shopping-cart icon-btn"></i>
+                <span id="cartCount" style="position:absolute; top:-8px; right:-8px; background:var(--accent); color:white; font-size:0.6rem; padding:2px 5px; border-radius:50%;">0</span>
+            </div>
+        </div>
     </header>
 
-    <div class="container">
-        
-        <h2>SNEAKERS COLLECTION</h2>
-        <div class="vitrine">
-            <div class="card-catalogo">
-                <img src="ct1.jpg" onerror="this.src='ct1.png'" alt="Catálogo Tênis 1">
-            </div>
-            <div class="card-catalogo">
-                <img src="ct2.jpg" onerror="this.src='ct2.png'" alt="Catálogo Tênis 2">
-            </div>
+    <div class="sidebar" id="filterSide">
+        <i class="fas fa-times modal-close" onclick="toggleSidebar('filterSide')"></i>
+        <h2 style="margin-bottom:30px; font-weight:900;">MARCAS</h2>
+        <div style="display:flex; flex-direction:column; gap:20px; font-weight:700;">
+            <p onclick="filterProducts('Nike')">NIKE</p>
+            <p onclick="filterProducts('Adidas')">ADIDAS</p>
+            <p onclick="filterProducts('Nocta')">NOCTA</p>
+            <p onclick="filterProducts('Tesla')">TESLA</p>
+            <p onclick="filterProducts('Jordan')">JORDAN</p>
+            <p onclick="filterProducts('All')">VER TUDO</p>
         </div>
-
-        <h2>PERFUMARIA PREMIUM</h2>
-        <div class="vitrine">
-            <div class="card-catalogo">
-                <img src="ct3.jpg" onerror="this.src='ct3.png'" alt="Catálogo Perfumes 1">
-            </div>
-            <div class="card-catalogo">
-                <img src="ct4.jpg" onerror="this.src='ct4.png'" alt="Catálogo Perfumes 2">
-            </div>
-        </div>
-
     </div>
 
-    <a href="https://wa.me/5599999999999" class="btn-whatsapp" target="_blank">
-        Falar com Especialista
-    </a>
+    <div class="sidebar" id="cartSide">
+        <i class="fas fa-times modal-close" onclick="toggleSidebar('cartSide')"></i>
+        <h2 style="margin-bottom:30px; font-weight:900;">CARRINHO</h2>
+        <div id="cartItems"></div>
+        <div style="margin-top:auto;">
+            <p style="display:flex; justify-content:space-between; font-weight:900;">TOTAL: <span id="cartTotal">R$ 0,00</span></p>
+            <button class="btn-buy" style="width:100%; margin-top:20px;">FINALIZAR COMPRA</button>
+        </div>
+    </div>
+
+    <section class="hero">
+        <img src="logo2.png" alt="Área 037 Logo" class="hero-logo-main">
+    </section>
+
+    <h2 class="section-title">Drop Recente</h2>
+    <div class="grid" id="mainGrid"></div>
+
+    <div class="mid-banner">
+        <div class="mid-item">
+            <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=600" alt="">
+            <div class="mid-text">High Performance</div>
+        </div>
+        <div class="mid-item">
+            <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=600" alt="">
+            <div class="mid-text">London Style</div>
+        </div>
+        <div class="mid-item">
+            <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600" alt="">
+            <div class="mid-text">Exclusive Drop</div>
+        </div>
+    </div>
+
+    <div class="grid" id="secondaryGrid"></div>
+
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content">
+            <i class="fas fa-times modal-close" onclick="closeModal()"></i>
+            <div class="modal-left">
+                <img id="modalImg" src="" alt="">
+            </div>
+            <div class="modal-right">
+                <p id="modalBrand" class="p-brand"></p>
+                <h2 id="modalName" style="font-weight:900; font-size:1.8rem; margin:5px 0; text-transform:uppercase;"></h2>
+                <p id="modalPrice" class="p-price" style="font-size:1.4rem;"></p>
+                
+                <p style="margin-top:20px; font-weight:700; font-size:0.8rem;">SELECIONE O TAMANHO</p>
+                <div class="size-grid">
+                    <div class="size-btn">38</div>
+                    <div class="size-btn">39</div>
+                    <div class="size-btn">40</div>
+                    <div class="size-btn">41</div>
+                    <div class="size-btn">42</div>
+                    <div class="size-btn">43</div>
+                </div>
+
+                <button class="btn-buy" onclick="addToCart()">COMPRAR AGORA</button>
+                <button class="btn-add" onclick="addToCart()">ADICIONAR AO CARRINHO</button>
+            </div>
+        </div>
+    </div>
 
     <footer>
-        &copy; 2026 B2 STREET - ESTILO E EXCLUSIVIDADE.
+        <img src="logo.jpg" alt="Área 037" class="footer-logo">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:30px; text-align:left;">
+            <div>
+                <p style="font-weight:900; margin-bottom:15px;">CONTATO</p>
+                <p style="font-size:0.8rem;">suporte@area037.com</p>
+                <p style="font-size:0.8rem;">@area037_street</p>
+            </div>
+            <div>
+                <p style="font-weight:900; margin-bottom:15px;">INFO</p>
+                <p style="font-size:0.8rem;">Trocas e Devoluções</p>
+                <p style="font-size:0.8rem;">Termos de Serviço</p>
+            </div>
+        </div>
     </footer>
 
+    <script>
+        const products = [
+            { id: 1, brand: 'Nike', name: 'Air Force 1 London Edition', price: 899, img: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600' },
+            { id: 2, brand: 'Adidas', name: 'Yeezy Boost 350 V2', price: 1499, img: 'https://images.unsplash.com/photo-1586525198428-225f6f12cff5?q=80&w=600' },
+            { id: 3, brand: 'Nocta', name: 'Hot Step Terra Black', price: 1200, img: 'https://images.unsplash.com/photo-1605348532760-6753d2c43329?q=80&w=600' },
+            { id: 4, brand: 'Tesla', name: 'Hertz Black/Red', price: 349, img: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=600' },
+            { id: 5, brand: 'Nike', name: 'Dunk Low Panda', price: 990, img: 'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=600' },
+            { id: 6, brand: 'Jordan', name: 'Air Jordan 1 High OG', price: 1800, img: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=600' },
+            { id: 7, brand: 'Adidas', name: 'Forum Low Classic', price: 599, img: 'https://images.unsplash.com/photo-1518002171953-a080ee817e1f?q=80&w=600' },
+            { id: 8, brand: 'Nocta', name: 'Glide White Chrome', price: 1100, img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600' }
+        ];
+
+        let cart = [];
+        let selectedProduct = null;
+
+        function init() {
+            renderProducts(products);
+            setupSizes();
+        }
+
+        function renderProducts(arr) {
+            const grid1 = document.getElementById('mainGrid');
+            const grid2 = document.getElementById('secondaryGrid');
+            grid1.innerHTML = ''; grid2.innerHTML = '';
+
+            arr.forEach((p, i) => {
+                const html = `
+                    <div class="p-card" onclick="openModal(${p.id})">
+                        <div class="p-img-box"><img src="${p.img}" alt=""></div>
+                        <div class="p-info">
+                            <p class="p-brand">${p.brand}</p>
+                            <p class="p-name">${p.name}</p>
+                            <p class="p-price">R$ ${p.price},00</p>
+                        </div>
+                    </div>
+                `;
+                if(i < 4) grid1.innerHTML += html;
+                else grid2.innerHTML += html;
+            });
+        }
+
+        function toggleSidebar(id) {
+            document.getElementById(id).classList.toggle('active');
+        }
+
+        function openModal(id) {
+            selectedProduct = products.find(p => p.id === id);
+            document.getElementById('modalImg').src = selectedProduct.img;
+            document.getElementById('modalName').innerText = selectedProduct.name;
+            document.getElementById('modalBrand').innerText = selectedProduct.brand;
+            document.getElementById('modalPrice').innerText = `R$ ${selectedProduct.price},00`;
+            document.getElementById('productModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function setupSizes() {
+            const btns = document.querySelectorAll('.size-btn');
+            btns.forEach(btn => {
+                btn.onclick = () => {
+                    btns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function addToCart() {
+            cart.push(selectedProduct);
+            updateCart();
+            closeModal();
+            toggleSidebar('cartSide');
+        }
+
+        function updateCart() {
+            const container = document.getElementById('cartItems');
+            container.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <img src="${item.img}" alt="">
+                    <div>
+                        <p style="font-size:0.8rem; font-weight:700;">${item.name}</p>
+                        <p style="font-size:0.8rem;">R$ ${item.price},00</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            const total = cart.reduce((acc, curr) => acc + curr.price, 0);
+            document.getElementById('cartTotal').innerText = `R$ ${total},00`;
+            document.getElementById('cartCount').innerText = cart.length;
+        }
+
+        function filterProducts(brand) {
+            if(brand === 'All') renderProducts(products);
+            else renderProducts(products.filter(p => p.brand === brand));
+            toggleSidebar('filterSide');
+        }
+
+        init();
+    </script>
 </body>
 </html>
