@@ -2,297 +2,235 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Área 037 | Streetwear & Sneakers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área 037 | Streetwear</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <style>
-        :root {
-            --primary: #000000;
-            --accent: #ff0000;
-            --gray-light: #f4f4f4;
-            --white: #ffffff;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--white); color: var(--primary); overflow-x: hidden; }
-
+        :root { --primary: #000; --green: #1b5e20; --white: #fff; --accent: #ff0000; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--white); overflow-x: hidden; }
+        
         /* HEADER */
-        header {
-            position: fixed; top: 0; width: 100%; height: 70px;
-            background: var(--white); display: flex; align-items: center;
-            justify-content: space-between; padding: 0 5%; z-index: 1000;
-            border-bottom: 1px solid #eee;
-        }
-        .header-left, .header-right { display: flex; align-items: center; gap: 20px; flex: 1; }
-        .header-right { justify-content: flex-end; }
-        
-        .logo-nav { height: 40px; } /* Logo do topo */
-        .icon-btn { font-size: 1.2rem; cursor: pointer; transition: 0.3s; }
-        .icon-btn:hover { color: var(--accent); }
+        header { position: fixed; top: 0; width: 100%; height: 75px; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; z-index: 1000; border-bottom: 1px solid #eee; }
+        .icon-btn { font-size: 1.2rem; cursor: pointer; transition: 0.2s; position: relative; }
 
-        /* HERO - LONDRES COM LOGO2.JPG */
-        .hero {
-            height: 80vh; margin-top: 70px;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+        /* LONDRES HERO */
+        .london-hero { 
+            width: 100%; height: 80vh; margin-top: 75px;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
                         url('https://images.unsplash.com/photo-1529655683826-aba9b3e77383?q=80&w=1600') center/cover;
-            display: flex; align-items: center; justify-content: center; text-align: center;
-            padding: 20px;
+            display: flex; align-items: center; justify-content: center;
         }
-        .hero-logo-main {
-            width: 80%; /* Ajuste para mobile */
-            max-width: 500px; /* Ajuste para desktop */
-            height: auto;
-            filter: drop-shadow(0px 4px 15px rgba(0,0,0,0.5)); /* Sombra para destacar do fundo */
-        }
+        .london-hero img { width: 70%; max-width: 400px; filter: drop-shadow(0 0 20px rgba(0,0,0,0.5)); }
 
-        /* VITRINE */
-        .section-title { padding: 40px 5% 20px; font-size: 1.5rem; text-transform: uppercase; font-weight: 900; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; padding: 0; background: #eee; border: 1px solid #eee; }
+        /* CARROSSEL */
+        .carousel-container { width: 100%; height: 350px; overflow: hidden; position: relative; background: #000; margin: 40px 0; }
+        .carousel-track { display: flex; transition: 0.6s cubic-bezier(0.45, 0, 0.55, 1); height: 100%; }
+        .carousel-track img { width: 100%; min-width: 100%; object-fit: cover; }
+
+        /* GRID PRODUTOS */
+        .section-container { padding: 40px 5%; }
+        .brand-title { font-size: 1.8rem; font-weight: 900; text-transform: uppercase; margin-bottom: 25px; border-left: 6px solid #000; padding-left: 15px; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 40px; }
+        @media(min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 25px; } }
         
-        @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); } }
-
-        .p-card { background: white; cursor: pointer; position: relative; overflow: hidden; }
-        .p-img-box { width: 100%; aspect-ratio: 1/1; overflow: hidden; }
-        .p-img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .p-card:hover .p-img-box img { transform: scale(1.05); }
-        .p-info { padding: 15px; }
-        .p-brand { font-size: 0.7rem; color: #888; text-transform: uppercase; font-weight: 700; }
-        .p-name { font-size: 0.85rem; font-weight: 700; margin: 5px 0; height: 35px; overflow: hidden; }
-        .p-price { font-weight: 900; font-size: 1rem; }
-
-        /* MID BANNER */
-        .mid-banner { 
-            display: grid; grid-template-columns: repeat(3, 1fr); 
-            height: 250px; gap: 0; margin: 40px 0; background: black;
-        }
-        .mid-item { position: relative; overflow: hidden; }
-        .mid-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.5s; }
-        .mid-text { position: absolute; bottom: 15px; left: 15px; color: white; font-weight: 900; text-transform: uppercase; font-size: 0.7rem; }
-
-        /* MODAL / POP-UP */
-        .modal-overlay { 
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8); 
-            display: none; align-items: flex-end; justify-content: center; z-index: 5000;
-        }
-        .modal-content { 
-            background: white; width: 100%; border-radius: 20px 20px 0 0;
-            max-height: 90vh; overflow-y: auto; position: relative;
-            animation: slideUp 0.3s ease-out;
-        }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-        @media (min-width: 768px) { 
-            .modal-overlay { align-items: center; padding: 20px; }
-            .modal-content { width: 1000px; grid-template-columns: 1.2fr 1fr; display: grid; border-radius: 0; overflow: hidden; } 
-        }
-
-        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; z-index: 10; }
-        .modal-left img { width: 100%; height: 100%; object-fit: cover; }
-        .modal-right { padding: 30px; display: flex; flex-direction: column; }
-        
-        .size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .size-btn { border: 1px solid #ddd; padding: 12px; text-align: center; cursor: pointer; font-size: 0.8rem; font-weight: 700; }
-        .size-btn.active { background: black; color: white; border-color: black; }
-
-        .btn-buy { background: black; color: white; padding: 18px; border: none; font-weight: 900; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
-        .btn-add { background: white; color: black; border: 1px solid black; padding: 18px; margin-top: 10px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        .p-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eee; cursor: pointer; transition: 0.3s; }
+        .p-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .p-price { color: var(--green); font-weight: 900; font-size: 1.1rem; margin-top: 5px; }
 
         /* SIDEBARS */
-        .sidebar { position: fixed; top: 0; width: 80%; max-width: 320px; height: 100%; background: white; z-index: 6000; transition: 0.4s; padding: 40px; }
+        .sidebar { position: fixed; top: 0; width: 320px; height: 100%; background: #fff; z-index: 5000; transition: 0.4s; padding: 35px; box-shadow: 0 0 30px rgba(0,0,0,0.1); }
         #filterSide { left: -320px; }
-        #cartSide { right: -320px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
-        .sidebar.active { transform: translateX(100%); } /* Ajuste mobile */
-        #cartSide.active { transform: translateX(-100%); }
+        #filterSide.active { left: 0; }
+        #cartSide { right: -320px; }
+        #cartSide.active { right: 0; }
+        .filter-link { display: block; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 20px; cursor: pointer; }
+        .close-btn { width: 100%; padding: 12px; background: #000; color: #fff; border: none; font-weight: 900; cursor: pointer; margin-bottom: 25px; }
 
-        .cart-item { display: flex; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
-        .cart-item img { width: 60px; height: 60px; object-fit: cover; }
+        /* CARRINHO */
+        .cart-item { display: flex; gap: 12px; margin-bottom: 15px; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .cart-item img { width: 65px; height: 65px; object-fit: cover; border-radius: 8px; background: #f9f9f9; }
+        .cart-item-info { flex: 1; }
 
-        /* FOOTER */
-        footer { background: #000; color: white; padding: 60px 5%; text-align: center; }
-        .footer-logo { height: 40px; filter: brightness(0) invert(1); margin-bottom: 30px; }
+        /* MODAL POPUP */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 6000; padding: 20px; }
+        .modal-content { background: #fff; width: 100%; max-width: 850px; border-radius: 20px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; position: relative; }
+        @media (max-width: 768px) { .modal-content { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; } }
+        .size-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 15px 0; }
+        .size-btn { padding: 10px; border: 1px solid #ddd; text-align: center; cursor: pointer; font-weight: 700; border-radius: 6px; }
+        .size-btn.selected { background: #000; color: #fff; border-color: #000; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="header-left">
-            <i class="fas fa-bars icon-btn" onclick="toggleSidebar('filterSide')"></i>
-        </div>
-        <div class="header-center">
-            <img src="logo.jpg" alt="Área 037" class="logo-nav">
-        </div>
-        <div class="header-right">
+        <i class="fas fa-bars icon-btn" onclick="toggleSidebar('filterSide')"></i>
+        <img src="logo.jpg" style="height:35px; cursor:pointer" onclick="window.location.reload()">
+        <div style="display:flex; gap:20px">
             <i class="fas fa-search icon-btn"></i>
-            <div style="position: relative;" onclick="toggleSidebar('cartSide')">
-                <i class="fas fa-shopping-cart icon-btn"></i>
-                <span id="cartCount" style="position:absolute; top:-8px; right:-8px; background:var(--accent); color:white; font-size:0.6rem; padding:2px 5px; border-radius:50%;">0</span>
+            <div class="icon-btn" onclick="toggleSidebar('cartSide')">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cartCount" style="position:absolute; top:-8px; right:-8px; background:red; color:white; font-size:0.6rem; padding:2px 5px; border-radius:50%;">0</span>
             </div>
         </div>
     </header>
 
-    <div class="sidebar" id="filterSide">
-        <i class="fas fa-times modal-close" onclick="toggleSidebar('filterSide')"></i>
-        <h2 style="margin-bottom:30px; font-weight:900;">MARCAS</h2>
-        <div style="display:flex; flex-direction:column; gap:20px; font-weight:700;">
-            <p onclick="filterProducts('Nike')">NIKE</p>
-            <p onclick="filterProducts('Adidas')">ADIDAS</p>
-            <p onclick="filterProducts('Nocta')">NOCTA</p>
-            <p onclick="filterProducts('Tesla')">TESLA</p>
-            <p onclick="filterProducts('Jordan')">JORDAN</p>
-            <p onclick="filterProducts('All')">VER TUDO</p>
-        </div>
+    <!-- SIDEBAR FILTROS -->
+    <div id="filterSide" class="sidebar">
+        <button class="close-btn" onclick="toggleSidebar('filterSide')">FECHAR MENU</button>
+        <h2>MARCAS</h2><br>
+        <span class="filter-link" onclick="filterBy('NIKE')">Nike</span>
+        <span class="filter-link" onclick="filterBy('ADIDAS')">Adidas</span>
+        <span class="filter-link" onclick="filterBy('NEW BALANCE')">New Balance</span>
+        <span class="filter-link" onclick="filterBy('PUMA')">Puma</span>
+        <span class="filter-link" onclick="filterBy('ALL')" style="color:var(--accent)">Ver Tudo</span>
     </div>
 
-    <div class="sidebar" id="cartSide">
-        <i class="fas fa-times modal-close" onclick="toggleSidebar('cartSide')"></i>
-        <h2 style="margin-bottom:30px; font-weight:900;">CARRINHO</h2>
+    <!-- SIDEBAR CARRINHO -->
+    <div id="cartSide" class="sidebar">
+        <button class="close-btn" onclick="toggleSidebar('cartSide')">FECHAR CARRINHO</button>
+        <h2 style="margin-bottom:20px">SEU CARRINHO</h2>
         <div id="cartItems"></div>
-        <div style="margin-top:auto;">
-            <p style="display:flex; justify-content:space-between; font-weight:900;">TOTAL: <span id="cartTotal">R$ 0,00</span></p>
-            <button class="btn-buy" style="width:100%; margin-top:20px;">FINALIZAR COMPRA</button>
+        <div style="margin-top:20px; border-top:2px solid #eee; padding-top:20px">
+            <h3 id="cartTotal">Total: R$ 0,00</h3>
+            <button style="width:100%; padding:15px; background:#1b5e20; color:#fff; border:none; margin-top:15px; font-weight:900; cursor:pointer">FINALIZAR PEDIDO</button>
         </div>
     </div>
 
-    <section class="hero">
-        <img src="logo2.png" alt="Área 037 Logo" class="hero-logo-main">
+    <!-- HERO LONDRES -->
+    <section class="london-hero">
+        <img src="logo2.png">
     </section>
 
-    <h2 class="section-title">Drop Recente</h2>
-    <div class="grid" id="mainGrid"></div>
+    <div id="mainContent" class="section-container">
+        <!-- ÁREA NIKE -->
+        <div id="nike-section"></div>
+        
+        <!-- CARROSSEL -->
+        <div class="carousel-container">
+            <div class="carousel-track" id="track"></div>
+        </div>
 
-    <div class="mid-banner">
-        <div class="mid-item">
-            <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=600" alt="">
-            <div class="mid-text">High Performance</div>
-        </div>
-        <div class="mid-item">
-            <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=600" alt="">
-            <div class="mid-text">London Style</div>
-        </div>
-        <div class="mid-item">
-            <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600" alt="">
-            <div class="mid-text">Exclusive Drop</div>
-        </div>
+        <!-- OUTRAS MARCAS -->
+        <div id="other-sections"></div>
     </div>
 
-    <div class="grid" id="secondaryGrid"></div>
-
+    <!-- POPUP DO PRODUTO -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
-            <i class="fas fa-times modal-close" onclick="closeModal()"></i>
-            <div class="modal-left">
-                <img id="modalImg" src="" alt="">
-            </div>
-            <div class="modal-right">
-                <p id="modalBrand" class="p-brand"></p>
-                <h2 id="modalName" style="font-weight:900; font-size:1.8rem; margin:5px 0; text-transform:uppercase;"></h2>
-                <p id="modalPrice" class="p-price" style="font-size:1.4rem;"></p>
+            <div style="background:#f5f5f5"><img id="modalImg" style="width:100%; height:100%; object-fit:cover"></div>
+            <div style="padding:30px">
+                <h2 id="modalName" style="font-weight:900; margin-bottom:5px"></h2>
+                <p id="modalPrice" style="font-size:1.5rem; font-weight:900; color:var(--green)"></p>
                 
-                <p style="margin-top:20px; font-weight:700; font-size:0.8rem;">SELECIONE O TAMANHO</p>
-                <div class="size-grid">
-                    <div class="size-btn">38</div>
-                    <div class="size-btn">39</div>
-                    <div class="size-btn">40</div>
-                    <div class="size-btn">41</div>
-                    <div class="size-btn">42</div>
-                    <div class="size-btn">43</div>
+                <p style="margin-top:20px; font-weight:700">Tamanho BR:</p>
+                <div class="size-selector">
+                    <div class="size-btn" onclick="selectSize(this)">38</div>
+                    <div class="size-btn" onclick="selectSize(this)">39</div>
+                    <div class="size-btn" onclick="selectSize(this)">40</div>
+                    <div class="size-btn" onclick="selectSize(this)">41</div>
+                    <div class="size-btn" onclick="selectSize(this)">42</div>
+                    <div class="size-btn" onclick="selectSize(this)">43</div>
                 </div>
 
-                <button class="btn-buy" onclick="addToCart()">COMPRAR AGORA</button>
-                <button class="btn-add" onclick="addToCart()">ADICIONAR AO CARRINHO</button>
+                <button onclick="confirmAddToCart()" style="width:100%; padding:18px; background:black; color:white; border:none; font-weight:900; cursor:pointer;">ADICIONAR AO CARRINHO</button>
+                <p onclick="closeModal()" style="text-align:center; margin-top:15px; cursor:pointer; font-weight:700; opacity:0.6">VOLTAR</p>
             </div>
         </div>
     </div>
 
-    <footer>
-        <img src="logo.jpg" alt="Área 037" class="footer-logo">
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:30px; text-align:left;">
-            <div>
-                <p style="font-weight:900; margin-bottom:15px;">CONTATO</p>
-                <p style="font-size:0.8rem;">suporte@area037.com</p>
-                <p style="font-size:0.8rem;">@area037_street</p>
-            </div>
-            <div>
-                <p style="font-weight:900; margin-bottom:15px;">INFO</p>
-                <p style="font-size:0.8rem;">Trocas e Devoluções</p>
-                <p style="font-size:0.8rem;">Termos de Serviço</p>
-            </div>
-        </div>
-    </footer>
-
     <script>
-        const products = [
-            { id: 1, brand: 'Nike', name: 'Air Force 1 London Edition', price: 899, img: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600' },
-            { id: 2, brand: 'Adidas', name: 'Yeezy Boost 350 V2', price: 1499, img: 'https://images.unsplash.com/photo-1586525198428-225f6f12cff5?q=80&w=600' },
-            { id: 3, brand: 'Nocta', name: 'Hot Step Terra Black', price: 1200, img: 'https://images.unsplash.com/photo-1605348532760-6753d2c43329?q=80&w=600' },
-            { id: 4, brand: 'Tesla', name: 'Hertz Black/Red', price: 349, img: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=600' },
-            { id: 5, brand: 'Nike', name: 'Dunk Low Panda', price: 990, img: 'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=600' },
-            { id: 6, brand: 'Jordan', name: 'Air Jordan 1 High OG', price: 1800, img: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=600' },
-            { id: 7, brand: 'Adidas', name: 'Forum Low Classic', price: 599, img: 'https://images.unsplash.com/photo-1518002171953-a080ee817e1f?q=80&w=600' },
-            { id: 8, brand: 'Nocta', name: 'Glide White Chrome', price: 1100, img: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600' }
-        ];
+        const firebaseConfig = {
+            apiKey: "AIzaSyBgjv7At7-QVc6zw0_oLtTxrzSK7nY6Cug",
+            authDomain: "area-037.firebaseapp.com",
+            databaseURL: "https://area-037-default-rtdb.firebaseio.com",
+            projectId: "area-037",
+            storageBucket: "area-037.firebasestorage.app",
+            messagingSenderId: "509994998279",
+            appId: "1:509994998279:web:3024b345e27de5ab0aa8a2"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-        let cart = [];
-        let selectedProduct = null;
+        let allProducts = [], cart = [], selectedProduct = null, selectedSize = null;
 
-        function init() {
-            renderProducts(products);
-            setupSizes();
-        }
+        // BANNERS
+        db.ref("banners").on("value", snap => {
+            const b = snap.val();
+            if(b) document.getElementById('track').innerHTML = `<img src="${b.link1}"><img src="${b.link2}"><img src="${b.link3}">`;
+        });
 
-        function renderProducts(arr) {
-            const grid1 = document.getElementById('mainGrid');
-            const grid2 = document.getElementById('secondaryGrid');
-            grid1.innerHTML = ''; grid2.innerHTML = '';
+        let slideIdx = 0;
+        setInterval(() => {
+            slideIdx = (slideIdx + 1) % 3;
+            document.getElementById('track').style.transform = `translateX(-${slideIdx * 100}%)`;
+        }, 5000);
 
-            arr.forEach((p, i) => {
-                const html = `
-                    <div class="p-card" onclick="openModal(${p.id})">
-                        <div class="p-img-box"><img src="${p.img}" alt=""></div>
-                        <div class="p-info">
-                            <p class="p-brand">${p.brand}</p>
-                            <p class="p-name">${p.name}</p>
-                            <p class="p-price">R$ ${p.price},00</p>
-                        </div>
-                    </div>
-                `;
-                if(i < 4) grid1.innerHTML += html;
-                else grid2.innerHTML += html;
+        // PRODUTOS
+        function loadItems() {
+            db.ref("produtos").on("value", snap => {
+                const data = snap.val();
+                allProducts = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
+                renderGrid(allProducts);
             });
         }
 
-        function toggleSidebar(id) {
-            document.getElementById(id).classList.toggle('active');
+        function renderGrid(products) {
+            const nikeDiv = document.getElementById('nike-section');
+            const otherDiv = document.getElementById('other-sections');
+            nikeDiv.innerHTML = '<h2 class="brand-title">NIKE</h2><div class="grid" id="nike-grid"></div>';
+            otherDiv.innerHTML = '';
+
+            // Nike
+            products.filter(p => p.brand.toUpperCase() === 'NIKE').forEach(p => {
+                document.getElementById('nike-grid').innerHTML += cardHtml(p);
+            });
+
+            // Outras
+            const otherBrands = [...new Set(products.map(p => p.brand.toUpperCase()))].filter(b => b !== 'NIKE');
+            otherBrands.forEach(brand => {
+                otherDiv.innerHTML += `<h2 class="brand-title">${brand}</h2><div class="grid">` + 
+                    products.filter(p => p.brand.toUpperCase() === brand).map(p => cardHtml(p)).join('') + 
+                    `</div>`;
+            });
         }
 
-        function openModal(id) {
-            selectedProduct = products.find(p => p.id === id);
+        function cardHtml(p) {
+            return `
+                <div class="p-card" onclick="openPopup('${p.id}')">
+                    <img src="${p.img}" style="width:100%; aspect-ratio:1/1; object-fit:cover">
+                    <div style="padding:12px">
+                        <p style="font-weight:700; font-size:0.9rem">${p.name}</p>
+                        <p class="p-price">R$ ${p.price},00</p>
+                    </div>
+                </div>`;
+        }
+
+        // FUNÇÕES POPUP
+        window.openPopup = (id) => {
+            selectedProduct = allProducts.find(p => p.id === id);
+            selectedSize = null;
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
             document.getElementById('modalImg').src = selectedProduct.img;
             document.getElementById('modalName').innerText = selectedProduct.name;
-            document.getElementById('modalBrand').innerText = selectedProduct.brand;
             document.getElementById('modalPrice').innerText = `R$ ${selectedProduct.price},00`;
             document.getElementById('productModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
-            document.getElementById('productModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
+        window.selectSize = (btn) => {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedSize = btn.innerText;
         }
 
-        function setupSizes() {
-            const btns = document.querySelectorAll('.size-btn');
-            btns.forEach(btn => {
-                btn.onclick = () => {
-                    btns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                }
-            });
-        }
+        window.closeModal = () => document.getElementById('productModal').style.display = 'none';
 
-        function addToCart() {
-            cart.push(selectedProduct);
+        // CARRINHO
+        window.confirmAddToCart = () => {
+            if(!selectedSize) return alert("Selecione o tamanho!");
+            cart.push({...selectedProduct, size: selectedSize});
             updateCart();
             closeModal();
             toggleSidebar('cartSide');
@@ -300,28 +238,36 @@
 
         function updateCart() {
             const container = document.getElementById('cartItems');
-            container.innerHTML = cart.map(item => `
-                <div class="cart-item">
-                    <img src="${item.img}" alt="">
-                    <div>
-                        <p style="font-size:0.8rem; font-weight:700;">${item.name}</p>
-                        <p style="font-size:0.8rem;">R$ ${item.price},00</p>
-                    </div>
-                </div>
-            `).join('');
-            
-            const total = cart.reduce((acc, curr) => acc + curr.price, 0);
-            document.getElementById('cartTotal').innerText = `R$ ${total},00`;
             document.getElementById('cartCount').innerText = cart.length;
+            container.innerHTML = cart.map((item, i) => `
+                <div class="cart-item">
+                    <img src="${item.img}">
+                    <div class="cart-item-info">
+                        <p style="font-weight:700; font-size:0.8rem">${item.name}</p>
+                        <p style="font-size:0.7rem">Tam: ${item.size}</p>
+                        <p style="color:var(--green); font-weight:900">R$ ${item.price}</p>
+                    </div>
+                    <i class="fas fa-trash" style="cursor:pointer; color:red" onclick="removeItem(${i})"></i>
+                </div>`).join('');
+            document.getElementById('cartTotal').innerText = `Total: R$ ${cart.reduce((a,b)=>a+b.price,0)},00`;
         }
 
-        function filterProducts(brand) {
-            if(brand === 'All') renderProducts(products);
-            else renderProducts(products.filter(p => p.brand === brand));
+        window.removeItem = (index) => {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        // UTILITÁRIOS
+        window.toggleSidebar = (id) => document.getElementById(id).classList.toggle('active');
+
+        window.filterBy = (brand) => {
+            if(brand === 'ALL') renderGrid(allProducts);
+            else renderGrid(allProducts.filter(p => p.brand.toUpperCase() === brand));
             toggleSidebar('filterSide');
+            window.scrollTo({top: 500, behavior: 'smooth'});
         }
 
-        init();
+        loadItems();
     </script>
 </body>
 </html>
