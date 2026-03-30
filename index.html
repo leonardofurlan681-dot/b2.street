@@ -12,11 +12,9 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: var(--white); overflow-x: hidden; }
         
-        /* HEADER */
         header { position: fixed; top: 0; width: 100%; height: 75px; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 5%; z-index: 1000; border-bottom: 1px solid #eee; }
         .icon-btn { font-size: 1.2rem; cursor: pointer; transition: 0.2s; position: relative; }
 
-        /* BARRA DE PESQUISA ANIMADA */
         .search-container {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: white; display: none; align-items: center; padding: 0 5%;
@@ -29,7 +27,6 @@
         }
         .close-search { font-size: 1.5rem; cursor: pointer; margin-left: 15px; }
 
-        /* LONDRES HERO */
         .london-hero { 
             width: 100%; height: 80vh; margin-top: 75px;
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
@@ -38,14 +35,12 @@
         }
         .london-hero img { width: 70%; max-width: 400px; filter: drop-shadow(0 0 20px rgba(0,0,0,0.5)); }
 
-        /* CARROSSEL */
         .carousel-container { width: 100%; height: 350px; overflow: hidden; position: relative; background: #000; margin: 40px 0; }
         .carousel-track { display: flex; transition: 0.6s cubic-bezier(0.45, 0, 0.55, 1); height: 100%; }
         .carousel-track img { width: 100%; min-width: 100%; object-fit: cover; }
 
-        /* GRID PRODUTOS */
         .section-container { padding: 40px 5%; min-height: 50vh; }
-        .brand-title { font-size: 1.8rem; font-weight: 900; text-transform: uppercase; margin-bottom: 25px; border-left: 6px solid #000; padding-left: 15px; }
+        .brand-title { font-size: 1.8rem; font-weight: 900; text-transform: uppercase; margin-bottom: 25px; border-left: 6px solid #000; padding-left: 15px; margin-top: 40px; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 40px; }
         @media(min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 25px; } }
         
@@ -53,7 +48,6 @@
         .p-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         .p-price { color: var(--green); font-weight: 900; font-size: 1.1rem; margin-top: 5px; }
 
-        /* SIDEBARS */
         .sidebar { position: fixed; top: 0; width: 320px; height: 100%; background: #fff; z-index: 5000; transition: 0.4s; padding: 35px; box-shadow: 0 0 30px rgba(0,0,0,0.1); }
         #filterSide { left: -320px; }
         #filterSide.active { left: 0; }
@@ -62,12 +56,9 @@
         .filter-link { display: block; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 20px; cursor: pointer; }
         .close-btn { width: 100%; padding: 12px; background: #000; color: #fff; border: none; font-weight: 900; cursor: pointer; margin-bottom: 25px; }
 
-        /* CARRINHO */
         .cart-item { display: flex; gap: 12px; margin-bottom: 15px; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .cart-item img { width: 65px; height: 65px; object-fit: cover; border-radius: 8px; background: #f9f9f9; }
-        .cart-item-info { flex: 1; }
 
-        /* MODAL POPUP */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 6000; padding: 20px; }
         .modal-content { background: #fff; width: 100%; max-width: 850px; border-radius: 20px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; position: relative; }
         @media (max-width: 768px) { .modal-content { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; } }
@@ -88,15 +79,12 @@
                 <span id="cartCount" style="position:absolute; top:-8px; right:-8px; background:red; color:white; font-size:0.6rem; padding:2px 5px; border-radius:50%;">0</span>
             </div>
         </div>
-
-        <!-- BARRA DE BUSCA -->
         <div class="search-container" id="searchBar">
             <input type="text" id="searchInput" placeholder="BUSCAR PRODUTO..." oninput="realTimeSearch()">
             <i class="fas fa-times close-search" onclick="toggleSearch()"></i>
         </div>
     </header>
 
-    <!-- SIDEBAR FILTROS -->
     <div id="filterSide" class="sidebar">
         <button class="close-btn" onclick="toggleSidebar('filterSide')">FECHAR MENU</button>
         <h2>MARCAS</h2><br>
@@ -107,32 +95,29 @@
         <span class="filter-link" onclick="filterBy('ALL')" style="color:var(--accent)">Ver Tudo</span>
     </div>
 
-    <!-- SIDEBAR CARRINHO -->
     <div id="cartSide" class="sidebar">
         <button class="close-btn" onclick="toggleSidebar('cartSide')">FECHAR CARRINHO</button>
         <h2 style="margin-bottom:20px">SEU CARRINHO</h2>
         <div id="cartItems"></div>
         <div style="margin-top:20px; border-top:2px solid #eee; padding-top:20px">
             <h3 id="cartTotal">Total: R$ 0,00</h3>
-            <button style="width:100%; padding:15px; background:#1b5e20; color:#fff; border:none; margin-top:15px; font-weight:900; cursor:pointer">FINALIZAR PEDIDO</button>
+            <button onclick="sendToWhatsApp()" style="width:100%; padding:15px; background:#1b5e20; color:#fff; border:none; margin-top:15px; font-weight:900; cursor:pointer">FINALIZAR PEDIDO NO WHATSAPP</button>
         </div>
     </div>
 
-    <!-- HERO LONDRES -->
     <section class="london-hero">
         <img src="logo2.png">
     </section>
 
     <div id="mainContent" class="section-container">
         <div id="search-result-title"></div>
-        <div id="nike-section"></div>
+        <div id="nike-sections-wrapper"></div>
         <div class="carousel-container" id="mainBanner">
             <div class="carousel-track" id="track"></div>
         </div>
         <div id="other-sections"></div>
     </div>
 
-    <!-- POPUP DO PRODUTO -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
             <div style="background:#f5f5f5"><img id="modalImg" style="width:100%; height:100%; object-fit:cover"></div>
@@ -170,7 +155,6 @@
         let allProducts = [], cart = [], selectedProduct = null, selectedSize = null;
         const fmtPrice = (val) => Number(val).toLocaleString('pt-br', {minimumFractionDigits: 2});
 
-        // BANNERS
         db.ref("banners").on("value", snap => {
             const b = snap.val();
             if(b) document.getElementById('track').innerHTML = `<img src="${b.link1}"><img src="${b.link2}"><img src="${b.link3}">`;
@@ -183,7 +167,6 @@
             if(t) t.style.transform = `translateX(-${slideIdx * 100}%)`;
         }, 5000);
 
-        // PRODUTOS
         db.ref("produtos").on("value", snap => {
             const data = snap.val();
             allProducts = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
@@ -191,26 +174,53 @@
         });
 
         function renderGrid(products, isSearch = false) {
-            const nikeDiv = document.getElementById('nike-section');
+            const nikeWrapper = document.getElementById('nike-sections-wrapper');
             const otherDiv = document.getElementById('other-sections');
             const banner = document.getElementById('mainBanner');
             const searchTitle = document.getElementById('search-result-title');
 
+            nikeWrapper.innerHTML = '';
+            otherDiv.innerHTML = '';
+
             if (isSearch) {
                 banner.style.display = 'none';
-                nikeDiv.innerHTML = '';
                 searchTitle.innerHTML = `<h2 class="brand-title">RESULTADOS DA BUSCA</h2>`;
                 otherDiv.innerHTML = `<div class="grid">` + products.map(p => cardHtml(p)).join('') + `</div>`;
                 if(products.length === 0) otherDiv.innerHTML = "<p style='text-align:center; padding:50px;'>Nenhum produto encontrado.</p>";
             } else {
                 banner.style.display = 'block';
                 searchTitle.innerHTML = '';
-                nikeDiv.innerHTML = '<h2 class="brand-title">NIKE</h2><div class="grid" id="nike-grid"></div>';
-                otherDiv.innerHTML = '';
 
-                products.filter(p => p.brand.toUpperCase() === 'NIKE').forEach(p => {
-                    document.getElementById('nike-grid').innerHTML += cardHtml(p);
+                const nikeProducts = products.filter(p => p.brand.toUpperCase() === 'NIKE');
+                
+                const categories = [
+                    { label: 'NIKE NOCTA', key: 'NOCTA' },
+                    { label: 'NIKE AIR MAX TN', key: 'TN' },
+                    { label: 'NIKE AIR MAX DN', key: 'DN' },
+                    { label: 'NIKE AIR FORCE', key: 'AIR FORCE' },
+                    { label: 'NIKE DUNK LOW', key: 'DUNK LOW' },
+                    { label: 'NIKE JORDAN LOW', key: 'JORDAN LOW' }
+                ];
+
+                categories.forEach(cat => {
+                    const filtered = nikeProducts.filter(p => p.name.toUpperCase().includes(cat.key));
+                    if (filtered.length > 0) {
+                        nikeWrapper.innerHTML += `
+                            <h2 class="brand-title">${cat.label}</h2>
+                            <div class="grid">${filtered.map(p => cardHtml(p)).join('')}</div>
+                        `;
+                    }
                 });
+
+                const otherNike = nikeProducts.filter(p => 
+                    !categories.some(cat => p.name.toUpperCase().includes(cat.key))
+                );
+                if (otherNike.length > 0) {
+                    nikeWrapper.innerHTML += `
+                        <h2 class="brand-title">OUTROS MODELOS NIKE</h2>
+                        <div class="grid">${otherNike.map(p => cardHtml(p)).join('')}</div>
+                    `;
+                }
 
                 const otherBrands = [...new Set(products.map(p => p.brand.toUpperCase()))].filter(b => b !== 'NIKE');
                 otherBrands.forEach(brand => {
@@ -232,32 +242,46 @@
                 </div>`;
         }
 
-        // LÓGICA DE PESQUISA
+        // --- WHATSAPP FINALIZATION LOGIC ---
+        window.sendToWhatsApp = () => {
+            if (cart.length === 0) return alert("Seu carrinho está vazio!");
+
+            let message = "🛍️ *NOVO PEDIDO - ÁREA 037*\n\n";
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                message += `*${index + 1}. ${item.name}*\n`;
+                message += `📏 Tam: ${item.size}\n`;
+                message += `💰 Preço: R$ ${fmtPrice(item.price)}\n\n`;
+                total += Number(item.price);
+            });
+
+            message += `--------------------------\n`;
+            message += `💵 *TOTAL: R$ ${fmtPrice(total)}*\n\n`;
+            message += `Tenho interesse nestes produtos! Como prosseguimos?`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const phone = "5537998744383";
+            const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+
+            window.open(whatsappUrl, '_blank');
+        };
+
         window.toggleSearch = () => {
             const bar = document.getElementById('searchBar');
             bar.classList.toggle('active');
-            if(bar.classList.contains('active')) {
-                document.getElementById('searchInput').focus();
-            } else {
-                document.getElementById('searchInput').value = '';
-                renderGrid(allProducts); // Volta ao normal ao fechar
-            }
+            if(bar.classList.contains('active')) document.getElementById('searchInput').focus();
+            else { document.getElementById('searchInput').value = ''; renderGrid(allProducts); }
         }
 
         window.realTimeSearch = () => {
             const term = document.getElementById('searchInput').value.toUpperCase();
             if(term.length > 0) {
-                const filtered = allProducts.filter(p => 
-                    p.name.toUpperCase().includes(term) || 
-                    p.brand.toUpperCase().includes(term)
-                );
+                const filtered = allProducts.filter(p => p.name.toUpperCase().includes(term) || p.brand.toUpperCase().includes(term));
                 renderGrid(filtered, true);
-            } else {
-                renderGrid(allProducts, false);
-            }
+            } else renderGrid(allProducts, false);
         }
 
-        // POPUP E CARRINHO (MESMA LÓGICA ANTERIOR)
         window.openPopup = (id) => {
             selectedProduct = allProducts.find(p => p.id === id);
             selectedSize = null;
@@ -296,10 +320,7 @@
             const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
             document.getElementById('cartTotal').innerText = `Total: R$ ${fmtPrice(total)}`;
         }
-        window.removeItem = (index) => {
-            cart.splice(index, 1);
-            updateCart();
-        }
+        window.removeItem = (index) => { cart.splice(index, 1); updateCart(); }
         window.toggleSidebar = (id) => document.getElementById(id).classList.toggle('active');
         window.filterBy = (brand) => {
             if(brand === 'ALL') renderGrid(allProducts);
