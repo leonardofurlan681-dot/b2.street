@@ -10,148 +10,122 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <style>
         :root { 
-            --bg: #fff; 
-            --text: #1a1a1a;
-            --sidebar-bg: #fff;
-            --primary: #000; 
-            --accent: #ff0000; 
-            --gray: #f8f8f8;
-            --price-color: #000; 
-            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --bg: #fff; --text: #1a1a1a; --sidebar-bg: #fff;
+            --primary: #000; --accent: #ff0000; --gray: #f8f8f8;
+            --transition: all 0.4s ease;
         }
-
-        body.dark-mode {
-            --bg: #121212;
-            --text: #fff;
-            --sidebar-bg: #1e1e1e;
-            --gray: #1a1a1a;
-            --price-color: #fff; 
-        }
+        body.dark-mode { --bg: #121212; --text: #fff; --sidebar-bg: #1e1e1e; --gray: #1a1a1a; }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; transition: background 0.3s, color 0.3s; }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
         body { background: var(--bg); color: var(--text); overflow-x: hidden; }
         
-        /* HEADER REFINADO */
+        /* Animação Fade In */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header, .london-hero, .brand-title, .grid, .sidebar, .modal-content, .carousel-container {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
         header { 
             position: fixed; top: 0; width: 100%; height: 80px; 
-            background: var(--bg); backdrop-filter: blur(15px); 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 0 5%; z-index: 1000; border-bottom: 1px solid rgba(128,128,128,0.1); 
+            background: var(--bg); display: flex; align-items: center; 
+            justify-content: space-between; padding: 0 5%; z-index: 1000; 
+            border-bottom: 1px solid rgba(128,128,128,0.1); 
         }
 
-        .icon-btn { font-size: 1.3rem; cursor: pointer; transition: var(--transition); position: relative; color: var(--text); }
-        .icon-btn:hover { opacity: 0.6; transform: scale(1.1); }
+        .icon-btn { font-size: 1.3rem; cursor: pointer; color: var(--text); transition: 0.3s; }
+        .icon-btn:hover { color: var(--accent); }
 
-        /* WHATSAPP FLUTUANTE */
-        .wa-float {
-            position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white;
-            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; font-size: 1.8rem; z-index: 999; box-shadow: 0 4px 15px rgba(37,211,102,0.4);
-            animation: pulse 2s infinite; text-decoration: none; transition: var(--transition);
-        }
-        .wa-float:hover { transform: scale(1.1); }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; z-index: 999; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
-        .search-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg); display: none; align-items: center; padding: 0 5%;
-            z-index: 1100;
-        }
-        .search-container.active { display: flex; animation: fadeIn 0.3s forwards; }
-        .search-container input {
-            flex: 1; border: none; outline: none; font-size: 1.2rem; font-weight: 700;
-            background: transparent; color: var(--text); text-transform: uppercase;
-        }
+        .search-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: none; align-items: center; padding: 0 5%; z-index: 1100; }
+        .search-container.active { display: flex; }
+        .search-container input { flex: 1; border: none; outline: none; font-size: 1.2rem; background: transparent; color: var(--text); font-weight: 700; }
 
-        /* HERO SECTION */
-        .london-hero { width: 100%; height: 70vh; margin-top: 80px; background: #000; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        .hero-video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; z-index: 0; }
-        .london-hero::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.3); z-index: 1; }
-        .london-hero img { width: 60%; max-width: 350px; z-index: 2; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5)); transition: transform 0.5s ease; }
+        .london-hero { width: 100%; height: 60vh; margin-top: 80px; background: #000; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .hero-video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; opacity: 0.7; }
+        .london-hero img { width: 220px; z-index: 2; position: relative; }
 
-        /* SIDEBARS */
-        .sidebar { position: fixed; top: 0; width: 320px; height: 100%; background: var(--sidebar-bg); z-index: 5000; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); padding: 40px; box-shadow: 0 0 50px rgba(0,0,0,0.15); }
-        .sidebar h2 { font-weight: 900; margin-bottom: 30px; font-size: 1.5rem; }
-        #filterSide { left: -320px; } #filterSide.active { left: 0; }
-        #cartSide { right: -320px; } #cartSide.active { right: 0; }
+        .sidebar { position: fixed; top: 0; width: 300px; height: 100%; background: var(--sidebar-bg); z-index: 5000; transition: 0.4s; padding: 40px; box-shadow: 0 0 50px rgba(0,0,0,0.3); }
+        #filterSide { left: -300px; } #filterSide.active { left: 0; }
+        #cartSide { right: -300px; } #cartSide.active { right: 0; }
 
-        .close-sidebar-x { position: absolute; top: 25px; right: 25px; font-size: 1.8rem; cursor: pointer; transition: 0.3s; }
-        .close-sidebar-x:hover { transform: rotate(90deg); color: var(--accent); }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
 
-        .filter-link { display: block; font-size: 1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 18px; cursor: pointer; transition: 0.2s; }
-        .filter-link:hover { color: var(--accent); padding-left: 5px; }
+        .brand-title { font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin: 40px 0 20px; border-left: 5px solid var(--text); padding-left: 15px; letter-spacing: 1px; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
+        @media(min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 25px; } }
         
-        /* CARDS */
-        .brand-title { font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin: 60px 0 25px; border-left: 5px solid var(--text); padding-left: 15px; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        @media(min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 30px; } }
+        .p-card { background: var(--gray); border-radius: 15px; overflow: hidden; cursor: pointer; transition: 0.3s; }
+        .p-card:hover { transform: translateY(-8px); }
         
-        .p-card { background: var(--gray); border-radius: 15px; overflow: hidden; cursor: pointer; transition: var(--transition); animation: fadeInUp 0.6s ease forwards; opacity: 0; }
-        .p-card:hover { transform: translateY(-12px) scale(1.02); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .p-price { color: var(--price-color); font-weight: 900 !important; font-size: 1.1rem; margin-top: 5px; }
+        .carousel-container { width: 100%; height: auto; aspect-ratio: 16/7; border-radius: 20px; overflow: hidden; margin: 50px 0; background: #000; }
+        .carousel-track { display: flex; transition: 0.7s ease-in-out; height: 100%; }
+        .carousel-track img { min-width: 100%; object-fit: cover; }
 
-        /* MODAL */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 6000; backdrop-filter: blur(5px); animation: fadeIn 0.3s; }
-        .modal-content { background: var(--bg); width: 95%; max-width: 900px; border-radius: 25px; overflow: hidden; display: grid; grid-template-columns: 1.2fr 1fr; position: relative; }
-        @media (max-width: 768px) { .modal-content { grid-template-columns: 1fr; height: 90vh; overflow-y: auto; } }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 6000; backdrop-filter: blur(8px); }
+        .modal-content { background: var(--bg); width: 95%; max-width: 850px; border-radius: 25px; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+        @media(max-width: 768px) { .modal-content { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; } }
 
-        .size-btn { padding: 12px; border: 1px solid #ccc; text-align: center; cursor: pointer; font-weight: 700; border-radius: 10px; transition: var(--transition); }
-        .size-btn.selected { background: var(--text); color: var(--bg); transform: scale(1.05); }
+        .size-btn { padding: 12px; border: 1px solid #ddd; text-align: center; cursor: pointer; border-radius: 10px; font-weight: 700; transition: 0.2s; }
+        .size-btn.selected { background: var(--text); color: var(--bg); border-color: var(--text); }
+        .btn-buy { width: 100%; padding: 18px; background: var(--text); color: var(--bg); border: none; font-weight: 900; border-radius: 12px; cursor: pointer; margin-top: 20px; text-transform: uppercase; }
 
-        .btn-finish { width: 100%; padding: 18px; background: #1b5e20; color: #fff; border: none; margin-top: 15px; font-weight: 900; cursor: pointer; border-radius: 12px; transition: var(--transition); }
-        .btn-finish:hover { transform: scale(1.02); opacity: 0.9; }
-        
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        /* Estilo para remover produto */
+        .btn-remove { color: var(--accent); cursor: pointer; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-top: 5px; display: inline-block; }
     </style>
 </head>
 <body>
 
     <header>
-        <i class="fas fa-align-left icon-btn" onclick="toggleSidebar('filterSide')"></i>
-        <img src="logo2.png" style="height:90px; cursor:pointer" onclick="window.location.reload()">
-        <div style="display:flex; gap:20px; align-items:center">
+        <i class="fas fa-bars icon-btn" onclick="toggleSidebar('filterSide')"></i>
+        <img src="logo2.png" style="height:55px; cursor:pointer" onclick="window.location.reload()">
+        <div style="display:flex; gap:20px;">
             <i id="themeIcon" class="fas fa-moon icon-btn" onclick="toggleTheme()"></i>
             <i class="fas fa-search icon-btn" onclick="toggleSearch()"></i>
-            <div class="icon-btn" onclick="toggleSidebar('cartSide')">
+            <div class="icon-btn" onclick="toggleSidebar('cartSide')" style="position:relative">
                 <i class="fas fa-shopping-bag"></i>
-                <span id="cartCount" style="position:absolute; top:-8px; right:-8px; background:var(--accent); color:white; font-size:0.65rem; padding:3px 6px; border-radius:50%; font-weight:900">0</span>
+                <span id="cartCount" style="position:absolute; top:-8px; right:-8px; background:red; color:white; font-size:0.7rem; width:18px; height:18px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:900">0</span>
             </div>
         </div>
         <div class="search-container" id="searchBar">
-            <input type="text" id="searchInput" placeholder="O que você procura?" oninput="realTimeSearch()">
+            <input type="text" id="searchInput" placeholder="BUSCAR MODELO..." oninput="realTimeSearch()">
             <i class="fas fa-times icon-btn" onclick="toggleSearch()"></i>
         </div>
     </header>
 
-    <a href="https://wa.me/5537998744383" target="_blank" class="wa-float">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <a href="https://wa.me/5537998744383" target="_blank" class="wa-float"><i class="fab fa-whatsapp"></i></a>
 
+    <!-- MENU LATERAL -->
     <div id="filterSide" class="sidebar">
-        <span class="close-sidebar-x" onclick="toggleSidebar('filterSide')">&times;</span>
-        <h2>MARCAS</h2>
-        <span class="filter-link" onclick="filterBy('NIKE')">Nike</span>
-        <span class="filter-link" onclick="filterBy('ADIDAS')">Adidas</span>
-        <span class="filter-link" onclick="filterBy('NEW BALANCE')">New Balance</span>
-        <span class="filter-link" onclick="filterBy('PUMA')">Puma</span>
-        <div style="height:1px; background:#ccc; margin: 20px 0;"></div>
-        <span class="filter-link" onclick="filterBy('ALL')" style="color:var(--accent)">Ver Toda Coleção</span>
+        <div class="sidebar-header">
+            <h2 style="font-weight:900">MARCAS</h2>
+            <i class="fas fa-times icon-btn" onclick="toggleSidebar('filterSide')"></i>
+        </div>
+        <div id="filterList">
+            <p onclick="filterBy('NIKE')" style="cursor:pointer; font-weight:700; margin-bottom:12px">NIKE</p>
+            <p onclick="filterBy('ADIDAS')" style="cursor:pointer; font-weight:700; margin-bottom:12px">ADIDAS</p>
+            <p onclick="filterBy('PUMA')" style="cursor:pointer; font-weight:700; margin-bottom:12px">PUMA</p>
+            <p onclick="filterBy('NEW BALANCE')" style="cursor:pointer; font-weight:700; margin-bottom:12px">NEW BALANCE</p>
+            <hr style="opacity: 0.1; margin: 15px 0;">
+            <div id="dynamicBrands"></div>
+        </div>
+        <p onclick="toggleSidebar('filterSide')" style="margin-top:40px; cursor:pointer; font-weight:700; opacity:0.5">FECHAR</p>
     </div>
 
+    <!-- CARRINHO -->
     <div id="cartSide" class="sidebar">
-        <span class="close-sidebar-x" onclick="toggleSidebar('cartSide')">&times;</span>
-        <h2>CARRINHO</h2>
-        <div id="cartItems" style="max-height: 60vh; overflow-y: auto;"></div>
-        <div style="margin-top:20px; border-top:1px solid #ccc; padding-top:20px">
-            <div style="display:flex; justify-content:space-between; align-items:center">
-                <span style="font-weight:700">SUBTOTAL</span>
-                <h3 id="cartTotal">R$ 0,00</h3>
-            </div>
-            <button class="btn-finish" onclick="sendToWhatsApp()">
-                <i class="fab fa-whatsapp"></i> FINALIZAR PEDIDO
-            </button>
+        <div class="sidebar-header">
+            <h2 style="font-weight:900">CARRINHO</h2>
+            <i class="fas fa-times icon-btn" onclick="toggleSidebar('cartSide')"></i>
+        </div>
+        <div id="cartItems" style="margin-top:25px; max-height: 60vh; overflow-y: auto;"></div>
+        <div style="border-top:2px solid var(--gray); padding-top:20px; margin-top:20px">
+            <p style="display:flex; justify-content:space-between">TOTAL: <b id="cartTotal">R$ 0,00</b></p>
+            <button class="btn-buy" onclick="sendToWhatsApp()" style="background:#1b5e20; color:white">FINALIZAR PEDIDO</button>
         </div>
     </div>
 
@@ -159,39 +133,37 @@
         <video autoplay muted loop playsinline class="hero-video-bg">
             <source src="video.mov" type="video/mp4">
         </video>
-        <img src="logo2.png" alt="Logo Área 037">
+        <img src="logo2.png">
     </section>
 
-    <div id="mainContent" style="padding: 0 5% 80px;">
-        <div id="search-result-title"></div>
-        <div id="nike-sections-wrapper"></div>
-        <div class="carousel-container" id="mainBanner" style="width: 100%; height: 400px; overflow: hidden; position: relative; border-radius: 25px; margin: 60px 0;">
-            <div class="carousel-track" id="track" style="display: flex; transition: 0.8s cubic-bezier(0.85, 0, 0.15, 1); height: 100%;"></div>
+    <div style="padding: 0 5% 100px;">
+        <div id="nikeSections"></div>
+        <div class="carousel-container" id="mainBanner">
+            <div class="carousel-track" id="track"></div>
         </div>
-        <div id="other-sections"></div>
+        <div id="othersWrapper"></div>
     </div>
 
+    <!-- MODAL DE PRODUTO -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
-            <div style="background:#f9f9f9; display:flex; align-items:center; justify-content:center">
+            <div style="background:#f4f4f4; display:flex; align-items:center; justify-content:center">
                 <img id="modalImg" style="width:100%; height:100%; object-fit:contain; padding:20px">
             </div>
-            <div style="padding:40px; display:flex; flex-direction:column; justify-content:center">
-                <h2 id="modalName" style="font-weight:900; font-size:1.8rem; line-height:1.1; margin-bottom:10px"></h2>
-                <p id="modalPrice" style="font-size:1.6rem; font-weight:900; color:var(--text)"></p>
-                <div style="margin:30px 0">
-                    <p style="margin-bottom:15px; font-weight:700; font-size:0.9rem">SELECIONE O TAMANHO</p>
-                    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px">
-                        <div class="size-btn" onclick="selectSize(this)">38</div>
-                        <div class="size-btn" onclick="selectSize(this)">39</div>
-                        <div class="size-btn" onclick="selectSize(this)">40</div>
-                        <div class="size-btn" onclick="selectSize(this)">41</div>
-                        <div class="size-btn" onclick="selectSize(this)">42</div>
-                        <div class="size-btn" onclick="selectSize(this)">43</div>
-                    </div>
+            <div style="padding:40px">
+                <h2 id="modalName" style="font-weight:900; text-transform:uppercase"></h2>
+                <h3 id="modalPrice" style="margin:15px 0; color:var(--accent); font-weight:900; font-size:1.6rem"></h3>
+                <p style="margin-bottom:12px; font-weight:700; font-size:0.8rem">TAMANHO:</p>
+                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px" id="sizes">
+                    <div class="size-btn" onclick="selectSize(this)">38</div>
+                    <div class="size-btn" onclick="selectSize(this)">39</div>
+                    <div class="size-btn" onclick="selectSize(this)">40</div>
+                    <div class="size-btn" onclick="selectSize(this)">41</div>
+                    <div class="size-btn" onclick="selectSize(this)">42</div>
+                    <div class="size-btn" onclick="selectSize(this)">43</div>
                 </div>
-                <button onclick="confirmAddToCart()" style="width:100%; padding:20px; background:var(--text); color:var(--bg); border:none; font-weight:900; cursor:pointer; border-radius:15px">ADICIONAR AO CARRINHO</button>
-                <p onclick="closeModal()" style="text-align:center; margin-top:20px; cursor:pointer; font-weight:700; opacity:0.6; font-size:0.8rem">VOLTAR</p>
+                <button class="btn-buy" onclick="confirmCart()">ADICIONAR AO CARRINHO</button>
+                <p onclick="closeModal()" style="text-align:center; margin-top:20px; cursor:pointer; opacity:0.4">FECHAR</p>
             </div>
         </div>
     </div>
@@ -209,139 +181,159 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            const icon = document.getElementById('themeIcon');
-            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun icon-btn' : 'fas fa-moon icon-btn';
-        }
+        let allProducts = [], cart = [], selectedSize = null, selectedProduct = null;
 
-        let allProducts = [], cart = [], selectedProduct = null, selectedSize = null;
-        const fmtPrice = (val) => Number(val).toLocaleString('pt-br', {minimumFractionDigits: 2});
+        const nikeCategories = [
+            { key: "SHOX", label: "NIKE SHOX" },
+            { key: "DUNK", label: "NIKE DUNK" },
+            { key: "NOCTA", label: "NIKE NOCTA" },
+            { key: "JORDAN", label: "AIR JORDAN" },
+            { key: "AIR MAX", label: "NIKE AIR MAX" },
+            { key: "AIR FORCE", label: "NIKE AIR FORCE" },
+            { key: "DN", label: "NIKE DN" },
+            { key: "TN", label: "NIKE TN / PLUS" }
+        ];
 
         db.ref("banners").on("value", snap => {
             const b = snap.val();
-            if(b) document.getElementById('track').innerHTML = `<img src="${b.link1}" style="min-width:100%; object-fit:cover"><img src="${b.link2}" style="min-width:100%; object-fit:cover"><img src="${b.link3}" style="min-width:100%; object-fit:cover">`;
+            if(b) document.getElementById('track').innerHTML = `<img src="${b.link1}"><img src="${b.link2}"><img src="${b.link3}">`;
         });
-
-        setInterval(() => {
-            let slideIdx = 0; 
-            slideIdx = (Math.floor(Date.now() / 5000)) % 3;
-            const t = document.getElementById('track');
-            if(t) t.style.transform = `translateX(-${slideIdx * 100}%)`;
-        }, 1000);
 
         db.ref("produtos").on("value", snap => {
             const data = snap.val();
             allProducts = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
-            renderGrid(allProducts);
+            organizeGrid(allProducts);
+            renderDynamicFilters();
         });
 
-        function renderGrid(products, isSearch = false) {
-            const nikeWrapper = document.getElementById('nike-sections-wrapper');
-            const otherDiv = document.getElementById('other-sections');
-            nikeWrapper.innerHTML = ''; otherDiv.innerHTML = '';
+        function organizeGrid(list) {
+            const nikeSections = document.getElementById('nikeSections');
+            const othersWrapper = document.getElementById('othersWrapper');
+            nikeSections.innerHTML = ''; othersWrapper.innerHTML = '';
 
-            if (isSearch) {
-                document.getElementById('mainBanner').style.display = 'none';
-                document.getElementById('search-result-title').innerHTML = `<h2 class="brand-title">Resultados</h2>`;
-                otherDiv.innerHTML = `<div class="grid">` + products.map(p => cardHtml(p)).join('') + `</div>`;
-            } else {
-                document.getElementById('mainBanner').style.display = 'block';
-                document.getElementById('search-result-title').innerHTML = '';
-                const nikeProducts = products.filter(p => p.brand.toUpperCase() === 'NIKE');
-                const cats = ['NOCTA', 'TN', 'DN', 'AIR FORCE', 'DUNK LOW', 'JORDAN'];
-                cats.forEach(cat => {
-                    const filtered = nikeProducts.filter(p => p.name.toUpperCase().includes(cat));
-                    if (filtered.length > 0) nikeWrapper.innerHTML += `<h2 class="brand-title">NIKE ${cat}</h2><div class="grid">${filtered.map(p => cardHtml(p)).join('')}</div>`;
-                });
-                const otherBrands = [...new Set(products.map(p => p.brand.toUpperCase()))].filter(b => b !== 'NIKE');
-                otherBrands.forEach(brand => {
-                    otherDiv.innerHTML += `<h2 class="brand-title">${brand}</h2><div class="grid">` + products.filter(p => p.brand.toUpperCase() === brand).map(p => cardHtml(p)).join('') + `</div>`;
-                });
+            const cleanList = list.map(p => ({
+                ...p,
+                brandClean: p.brand.trim().toUpperCase(),
+                nameUpper: p.name.toUpperCase()
+            })).sort((a, b) => a.nameUpper.localeCompare(b.nameUpper));
+
+            let nikeProducts = cleanList.filter(p => p.brandClean === 'NIKE');
+            
+            nikeCategories.forEach(cat => {
+                const filtered = nikeProducts.filter(p => p.nameUpper.includes(cat.key));
+                if(filtered.length > 0) {
+                    nikeSections.innerHTML += `<h2 class="brand-title">${cat.label}</h2><div class="grid">${filtered.map(p => card(p)).join('')}</div>`;
+                    nikeProducts = nikeProducts.filter(p => !filtered.includes(p));
+                }
+            });
+
+            if(nikeProducts.length > 0) {
+                nikeSections.innerHTML += `<h2 class="brand-title">OUTROS MODELOS NIKE</h2><div class="grid">${nikeProducts.map(p => card(p)).join('')}</div>`;
             }
+
+            const otherBrands = [...new Set(cleanList.map(p => p.brandClean))].filter(b => !['NIKE','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
+            
+            // Renderiza as fixas ADIDAS, PUMA, NEW BALANCE primeiro se houver produtos
+            ['ADIDAS','PUMA','NEW BALANCE'].forEach(brandName => {
+                const bProducts = cleanList.filter(p => p.brandClean === brandName);
+                if(bProducts.length > 0) othersWrapper.innerHTML += `<h2 class="brand-title">${brandName}</h2><div class="grid">${bProducts.map(p => card(p)).join('')}</div>`;
+            });
+
+            otherBrands.forEach(brand => {
+                const brandProducts = cleanList.filter(p => p.brandClean === brand);
+                othersWrapper.innerHTML += `<h2 class="brand-title">${brand}</h2><div class="grid">${brandProducts.map(p => card(p)).join('')}</div>`;
+            });
         }
 
-        function cardHtml(p) {
+        function card(p) {
             return `
                 <div class="p-card" onclick="openPopup('${p.id}')">
                     <img src="${p.img}" style="width:100%; aspect-ratio:1/1; object-fit:cover">
                     <div style="padding:15px">
-                        <p style="font-weight:700; font-size:0.85rem; opacity:0.6; margin-bottom:4px">${p.brand}</p>
-                        <p style="font-weight:700; font-size:0.95rem; height:40px; overflow:hidden">${p.name}</p>
-                        <p class="p-price">R$ ${fmtPrice(p.price)}</p>
+                        <p style="font-weight:700; font-size:0.9rem; height:42px; overflow:hidden; text-transform:uppercase">${p.name}</p>
+                        <p style="font-weight:900; font-size:1.1rem; margin-top:8px">R$ ${Number(p.price).toLocaleString('pt-br', {minimumFractionDigits:2})}</p>
                     </div>
                 </div>`;
         }
 
-        window.toggleSidebar = (id) => document.getElementById(id).classList.toggle('active');
-        window.toggleSearch = () => document.getElementById('searchBar').classList.toggle('active');
+        function renderDynamicFilters() {
+            const container = document.getElementById('dynamicBrands');
+            const brands = [...new Set(allProducts.map(p => p.brand.trim().toUpperCase()))].filter(b => !['NIKE','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
+            container.innerHTML = brands.map(b => `<p onclick="filterBy('${b}')" style="cursor:pointer; font-weight:700; margin-bottom:12px">${b}</p>`).join('');
+        }
 
-        window.openPopup = (id) => {
+        function filterBy(brand) {
+            if(brand === 'ALL') organizeGrid(allProducts);
+            else organizeGrid(allProducts.filter(p => p.brand.trim().toUpperCase() === brand));
+            toggleSidebar('filterSide');
+            window.scrollTo({top: 500, behavior: 'smooth'});
+        }
+
+        function openPopup(id) {
             selectedProduct = allProducts.find(p => p.id === id);
-            selectedSize = null;
-            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
             document.getElementById('modalImg').src = selectedProduct.img;
             document.getElementById('modalName').innerText = selectedProduct.name;
-            document.getElementById('modalPrice').innerText = `R$ ${fmtPrice(selectedProduct.price)}`;
+            document.getElementById('modalPrice').innerText = "R$ " + Number(selectedProduct.price).toLocaleString('pt-br', {minimumFractionDigits:2});
             document.getElementById('productModal').style.display = 'flex';
-        };
+        }
 
-        window.closeModal = () => document.getElementById('productModal').style.display = 'none';
+        function closeModal() { document.getElementById('productModal').style.display = 'none'; selectedSize = null; }
+        function selectSize(btn) { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedSize = btn.innerText; }
 
-        window.selectSize = (btn) => {
-            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            selectedSize = btn.innerText;
-        };
-
-        window.confirmAddToCart = () => {
-            if(!selectedSize) return alert("Selecione um tamanho.");
-            cart.push({...selectedProduct, size: selectedSize});
+        function confirmCart() {
+            if(!selectedSize) return alert("Selecione o tamanho!");
+            cart.push({...selectedProduct, size: selectedSize, cartId: Date.now()});
             updateCart();
             closeModal();
             toggleSidebar('cartSide');
-        };
-
-        function updateCart() {
-            const container = document.getElementById('cartItems');
-            document.getElementById('cartCount').innerText = cart.length;
-            container.innerHTML = cart.map((item, i) => `
-                <div style="display:flex; gap:15px; margin-bottom:20px; align-items:center">
-                    <img src="${item.img}" style="width:70px; height:70px; object-fit:cover; border-radius:12px">
-                    <div style="flex:1">
-                        <p style="font-weight:700; font-size:0.85rem">${item.name}</p>
-                        <p style="font-size:0.75rem; opacity:0.7">Tamanho: ${item.size}</p>
-                        <p style="font-weight:900">R$ ${fmtPrice(item.price)}</p>
-                    </div>
-                    <i class="fas fa-times" style="cursor:pointer; opacity:0.5" onclick="removeItem(${i})"></i>
-                </div>`).join('');
-            const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
-            document.getElementById('cartTotal').innerText = `R$ ${fmtPrice(total)}`;
         }
 
-        window.removeItem = (index) => { cart.splice(index, 1); updateCart(); };
+        function updateCart() {
+            document.getElementById('cartCount').innerText = cart.length;
+            const div = document.getElementById('cartItems');
+            div.innerHTML = cart.map((item, i) => `
+                <div style="display:flex; gap:10px; margin-bottom:15px; background:var(--gray); padding:10px; border-radius:10px; animation: fadeIn 0.3s ease;">
+                    <img src="${item.img}" style="width:50px; height:50px; object-fit:cover; border-radius:5px">
+                    <div style="flex:1">
+                        <p style="font-size:0.7rem; font-weight:700; text-transform:uppercase">${item.name}</p>
+                        <p style="font-size:0.6rem">TAM: ${item.size}</p>
+                        <p style="font-weight:900; font-size:0.8rem">R$ ${item.price}</p>
+                        <span class="btn-remove" onclick="removeFromCart(${i})">Remover</span>
+                    </div>
+                </div>`).join('');
+            const total = cart.reduce((s, i) => s + Number(i.price), 0);
+            document.getElementById('cartTotal').innerText = "R$ " + total.toLocaleString('pt-br', {minimumFractionDigits:2});
+        }
 
-        window.realTimeSearch = () => {
-            const term = document.getElementById('searchInput').value.toUpperCase();
-            if(term.length > 0) {
-                const filtered = allProducts.filter(p => p.name.toUpperCase().includes(term) || p.brand.toUpperCase().includes(term));
-                renderGrid(filtered, true);
-            } else renderGrid(allProducts, false);
-        };
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
 
-        window.filterBy = (brand) => {
-            if(brand === 'ALL') renderGrid(allProducts);
-            else renderGrid(allProducts.filter(p => p.brand.toUpperCase() === brand));
-            toggleSidebar('filterSide');
-        };
-
-        window.sendToWhatsApp = () => {
-            if (cart.length === 0) return alert("Carrinho vazio!");
-            let msg = "🔥 *NOVO PEDIDO - ÁREA 037*\n\n";
-            cart.forEach(item => msg += `▪️ ${item.name} (Tam: ${item.size}) - R$ ${fmtPrice(item.price)}\n`);
-            msg += `\n💰 *TOTAL: ${document.getElementById('cartTotal').innerText}*`;
+        function sendToWhatsApp() {
+            if(!cart.length) return;
+            let msg = "🛒 *NOVO PEDIDO ÁREA 037*\n\n";
+            cart.forEach(i => msg += `• ${i.name} (${i.size}) - R$ ${i.price}\n`);
+            msg += `\n*TOTAL: ${document.getElementById('cartTotal').innerText}*`;
             window.open(`https://wa.me/5537998744383?text=${encodeURIComponent(msg)}`);
-        };
+        }
+
+        function toggleSidebar(id) { document.getElementById(id).classList.toggle('active'); }
+        function toggleSearch() { document.getElementById('searchBar').classList.toggle('active'); }
+        function toggleTheme() { document.body.classList.toggle('dark-mode'); }
+
+        function realTimeSearch() {
+            const term = document.getElementById('searchInput').value.toUpperCase();
+            const filtered = allProducts.filter(p => p.name.toUpperCase().includes(term) || p.brand.toUpperCase().includes(term));
+            organizeGrid(filtered);
+        }
+
+        let slide = 0;
+        setInterval(() => {
+            slide = (slide + 1) % 3;
+            const t = document.getElementById('track');
+            if(t) t.style.transform = `translateX(-${slide * 100}%)`;
+        }, 5000);
     </script>
 </body>
 </html>
