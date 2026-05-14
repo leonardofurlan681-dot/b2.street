@@ -107,6 +107,7 @@
         </div>
         <div id="filterList">
             <p onclick="filterBy('NIKE')" style="cursor:pointer; font-weight:700; margin-bottom:12px">NIKE</p>
+            <p onclick="filterBy('MIZUNO')" style="cursor:pointer; font-weight:700; margin-bottom:12px">MIZUNO</p>
             <p onclick="filterBy('ADIDAS')" style="cursor:pointer; font-weight:700; margin-bottom:12px">ADIDAS</p>
             <p onclick="filterBy('PUMA')" style="cursor:pointer; font-weight:700; margin-bottom:12px">PUMA</p>
             <p onclick="filterBy('NEW BALANCE')" style="cursor:pointer; font-weight:700; margin-bottom:12px">NEW BALANCE</p>
@@ -138,6 +139,7 @@
 
     <div style="padding: 0 5% 100px;">
         <div id="nikeSections"></div>
+        <div id="mizunoSections"></div>
         <div class="carousel-container" id="mainBanner">
             <div class="carousel-track" id="track"></div>
         </div>
@@ -208,8 +210,12 @@
 
         function organizeGrid(list) {
             const nikeSections = document.getElementById('nikeSections');
+            const mizunoSections = document.getElementById('mizunoSections');
             const othersWrapper = document.getElementById('othersWrapper');
-            nikeSections.innerHTML = ''; othersWrapper.innerHTML = '';
+            
+            nikeSections.innerHTML = ''; 
+            mizunoSections.innerHTML = '';
+            othersWrapper.innerHTML = '';
 
             const cleanList = list.map(p => ({
                 ...p,
@@ -217,8 +223,8 @@
                 nameUpper: p.name.toUpperCase()
             })).sort((a, b) => a.nameUpper.localeCompare(b.nameUpper));
 
+            // --- SEÇÃO NIKE ---
             let nikeProducts = cleanList.filter(p => p.brandClean === 'NIKE');
-            
             nikeCategories.forEach(cat => {
                 const filtered = nikeProducts.filter(p => p.nameUpper.includes(cat.key));
                 if(filtered.length > 0) {
@@ -226,14 +232,19 @@
                     nikeProducts = nikeProducts.filter(p => !filtered.includes(p));
                 }
             });
-
             if(nikeProducts.length > 0) {
                 nikeSections.innerHTML += `<h2 class="brand-title">OUTROS MODELOS NIKE</h2><div class="grid">${nikeProducts.map(p => card(p)).join('')}</div>`;
             }
 
-            const otherBrands = [...new Set(cleanList.map(p => p.brandClean))].filter(b => !['NIKE','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
+            // --- SEÇÃO MIZUNO ---
+            let mizunoProducts = cleanList.filter(p => p.brandClean === 'MIZUNO');
+            if(mizunoProducts.length > 0) {
+                mizunoSections.innerHTML += `<h2 class="brand-title">MIZUNO</h2><div class="grid">${mizunoProducts.map(p => card(p)).join('')}</div>`;
+            }
+
+            // --- OUTRAS MARCAS ---
+            const otherBrands = [...new Set(cleanList.map(p => p.brandClean))].filter(b => !['NIKE','MIZUNO','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
             
-            // Renderiza as fixas ADIDAS, PUMA, NEW BALANCE primeiro se houver produtos
             ['ADIDAS','PUMA','NEW BALANCE'].forEach(brandName => {
                 const bProducts = cleanList.filter(p => p.brandClean === brandName);
                 if(bProducts.length > 0) othersWrapper.innerHTML += `<h2 class="brand-title">${brandName}</h2><div class="grid">${bProducts.map(p => card(p)).join('')}</div>`;
@@ -258,7 +269,7 @@
 
         function renderDynamicFilters() {
             const container = document.getElementById('dynamicBrands');
-            const brands = [...new Set(allProducts.map(p => p.brand.trim().toUpperCase()))].filter(b => !['NIKE','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
+            const brands = [...new Set(allProducts.map(p => p.brand.trim().toUpperCase()))].filter(b => !['NIKE','MIZUNO','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
             container.innerHTML = brands.map(b => `<p onclick="filterBy('${b}')" style="cursor:pointer; font-weight:700; margin-bottom:12px">${b}</p>`).join('');
         }
 
