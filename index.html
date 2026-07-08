@@ -10,85 +10,212 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <style>
         :root { 
-            --bg: #fff; --text: #1a1a1a; --sidebar-bg: #fff;
-            --primary: #000; --accent: #ff0000; --gray: #f8f8f8;
-            --transition: all 0.4s ease;
+            --bg: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            --text: #1a1a1a; 
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --primary: #000; 
+            --accent: #00e676; 
+            --gray: rgba(255, 255, 255, 0.3);
+            --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.06);
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        body.dark-mode { --bg: #121212; --text: #fff; --sidebar-bg: #1e1e1e; --gray: #1a1a1a; }
+        body.dark-mode { 
+            --bg: linear-gradient(135deg, #0f0f12 0%, #1a1a24 100%);
+            --text: #fff; 
+            --glass-bg: rgba(18, 18, 24, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --gray: rgba(255, 255, 255, 0.05);
+            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
         
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; background-attachment: fixed; }
         
-        /* Animação Fade In */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Splash Screen */
+        #splashScreen {
+            position: fixed; inset: 0; background: #ffffff; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        #splashScreen img { width: 220px; animation: pulse 1.5s infinite ease-in-out; }
+        @keyframes pulse {
+            0% { transform: scale(0.96); opacity: 0.8; }
+            50% { transform: scale(1.04); opacity: 1; }
+            100% { transform: scale(0.96); opacity: 0.8; }
         }
 
-        header, .london-hero, .brand-title, .grid, .sidebar, .modal-content, .carousel-container {
-            animation: fadeIn 0.6s ease forwards;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        header, .london-hero, .brand-title, .grid, .sidebar, .product-page-content, .carousel-container, .hero-manifesto {
+            animation: fadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
         header { 
             position: fixed; top: 0; width: 100%; height: 80px; 
-            background: var(--bg); display: flex; align-items: center; 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            display: flex; align-items: center; 
             justify-content: space-between; padding: 0 5%; z-index: 1000; 
-            border-bottom: 1px solid rgba(128,128,128,0.1); 
+            border-bottom: 1px solid var(--glass-border); 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
         }
 
-        .icon-btn { font-size: 1.3rem; cursor: pointer; color: var(--text); transition: 0.3s; }
-        .icon-btn:hover { color: var(--accent); }
+        .icon-btn { font-size: 1.3rem; cursor: pointer; color: var(--text); transition: var(--transition); text-decoration: none; display: inline-flex; align-items: center; }
+        .icon-btn:hover { color: var(--accent); transform: scale(1.1); }
 
-        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; z-index: 999; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; z-index: 999; text-decoration: none; box-shadow: 0 8px 24px rgba(37, 211, 102, 0.3); transition: var(--transition); }
+        .wa-float:hover { transform: scale(1.1) translateY(-5px); }
 
-        .search-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: none; align-items: center; padding: 0 5%; z-index: 1100; }
-        .search-container.active { display: flex; }
-        .search-container input { flex: 1; border: none; outline: none; font-size: 1.2rem; background: transparent; color: var(--text); font-weight: 700; }
+        .search-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; align-items: center; padding: 0 5%; z-index: 1100; }
+        .search-container.active { display: flex; animation: fadeIn 0.3s ease; }
+        .search-container input { flex: 1; border: none; outline: none; font-size: 1.2rem; background: transparent; color: var(--text); font-weight: 700; letter-spacing: 1px; }
 
-        .london-hero { width: 100%; height: 60vh; margin-top: 80px; background: #000; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        .hero-video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; opacity: 0.7; }
-        .london-hero img { width: 220px; z-index: 2; position: relative; }
+        /* Nova Estrutura de Herói - Sem fundo sólido e com máscara de transparência no vídeo */
+        .london-hero { width: 100%; height: 65vh; margin-top: 80px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .hero-video-bg { 
+            position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; opacity: 0.85; filter: saturate(1.1);
+            /* Faz o próprio vídeo sumir suavemente de baixo para cima integrado ao fundo do site */
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+        }
+        .london-hero img { width: 240px; z-index: 2; position: relative; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6)); }
 
-        .sidebar { position: fixed; top: 0; width: 300px; height: 100%; background: var(--sidebar-bg); z-index: 5000; transition: 0.4s; padding: 40px; box-shadow: 0 0 50px rgba(0,0,0,0.3); }
-        #filterSide { left: -300px; } #filterSide.active { left: 0; }
-        #cartSide { right: -300px; } #cartSide.active { right: 0; }
+        /* Espaçamento Inteligente do Manifesto */
+        .hero-manifesto {
+            padding: 60px 10% 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            position: relative;
+            z-index: 3;
+        }
+        .hero-manifesto p {
+            max-width: 780px;
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.8;
+            letter-spacing: 0.5px;
+            opacity: 0.95;
+        }
+        /* No modo escuro garantimos um belo realce */
+        body.dark-mode .hero-manifesto p {
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
 
-        .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        /* Botão do Instagram Customizado */
+        .instagram-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: #ffffff !important;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(220, 39, 67, 0.35);
+            transition: var(--transition);
+        }
+        .instagram-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(220, 39, 67, 0.5);
+        }
 
-        .brand-title { font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin: 40px 0 20px; border-left: 5px solid var(--text); padding-left: 15px; letter-spacing: 1px; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
-        @media(min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 25px; } }
+        .sidebar { position: fixed; top: 0; width: 320px; height: 100%; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-right: 1px solid var(--glass-border); border-left: 1px solid var(--glass-border); z-index: 5000; transition: var(--transition); padding: 40px; box-shadow: var(--card-shadow); display: flex; flex-direction: column; justify-content: space-between; }
+        #filterSide { left: -320px; } #filterSide.active { left: 0; }
+        #cartSide { right: -320px; } #cartSide.active { right: 0; }
+
+        .brand-title { font-size: 1.3rem; font-weight: 900; text-transform: uppercase; margin: 50px 0 25px; border-left: 4px solid var(--text); padding-left: 15px; letter-spacing: 1.5px; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 40px; }
+        @media(min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 28px; } }
         
-        .p-card { background: var(--gray); border-radius: 15px; overflow: hidden; cursor: pointer; transition: 0.3s; }
-        .p-card:hover { transform: translateY(-8px); }
+        .p-card { background: var(--glass-bg); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--glass-border); border-radius: 20px; overflow: hidden; cursor: pointer; transition: var(--transition); box-shadow: var(--card-shadow); }
+        .p-card:hover { transform: translateY(-10px) scale(1.02); }
         
-        .carousel-container { width: 100%; height: auto; aspect-ratio: 16/7; border-radius: 20px; overflow: hidden; margin: 50px 0; background: #000; }
-        .carousel-track { display: flex; transition: 0.7s ease-in-out; height: 100%; }
+        .carousel-container { width: 100%; height: auto; aspect-ratio: 16/6.5; border-radius: 24px; overflow: hidden; margin: 60px 0; background: #000; box-shadow: var(--card-shadow); border: 1px solid var(--glass-border); }
+        .carousel-track { display: flex; transition: 0.9s cubic-bezier(0.25, 1, 0.5, 1); height: 100%; }
         .carousel-track img { min-width: 100%; object-fit: cover; }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 6000; backdrop-filter: blur(8px); }
-        .modal-content { background: var(--bg); width: 95%; max-width: 850px; border-radius: 25px; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
-        @media(max-width: 768px) { .modal-content { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; } }
+        /* Página do Produto */
+        #productPage { 
+            position: fixed; inset: 0; background: rgba(255, 255, 255, 0.04); z-index: 2000; 
+            display: none; overflow-y: auto; padding: 120px 5% 60px;
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+        }
+        body.dark-mode #productPage {
+            background: rgba(0, 0, 0, 0.15);
+        }
+        
+        .product-page-content { 
+            background: var(--glass-bg);
+            width: 100%; max-width: 1050px; margin: 0 auto; border-radius: 32px; 
+            display: grid; grid-template-columns: 1.1fr 0.9fr; overflow: hidden; 
+            box-shadow: var(--card-shadow); border: none !important;
+        }
+        
+        @media(max-width: 768px) { 
+            #productPage { padding: 90px 4% 40px; }
+            .product-page-content { grid-template-columns: 1fr; border-radius: 24px; } 
+        }
 
-        .size-btn { padding: 12px; border: 1px solid #ddd; text-align: center; cursor: pointer; border-radius: 10px; font-weight: 700; transition: 0.2s; }
-        .size-btn.selected { background: var(--text); color: var(--bg); border-color: var(--text); }
-        .btn-buy { width: 100%; padding: 18px; background: var(--text); color: var(--bg); border: none; font-weight: 900; border-radius: 12px; cursor: pointer; margin-top: 20px; text-transform: uppercase; }
+        .size-btn { padding: 14px; border: 1px solid var(--glass-border); background: var(--gray); text-align: center; cursor: pointer; border-radius: 12px; font-weight: 700; transition: var(--transition); color: var(--text); }
+        .size-btn:hover { background: rgba(255,255,255,0.5); }
+        .size-btn.selected { background: var(--text); color: #fff !important; }
+        
+        .btn-buy { 
+            width: 100%; padding: 18px; 
+            background: #000000 !important; color: #ffffff !important; 
+            border: none; font-weight: 900; border-radius: 14px; cursor: pointer; 
+            margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; 
+            transition: var(--transition); display: block; text-align: center; font-size: 1rem;
+        }
+        body.dark-mode .btn-buy {
+            background: #ffffff !important; color: #000000 !important;
+        }
+        .btn-buy:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        /* Estilo para remover produto */
-        .btn-remove { color: var(--accent); cursor: pointer; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-top: 5px; display: inline-block; }
+        .info-accordion { margin-top: 15px; background: var(--gray); border-radius: 12px; overflow: hidden; }
+        .accordion-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px; text-transform: uppercase; }
+        .accordion-header i { transition: transform 0.3s ease; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 20px; font-size: 0.85rem; opacity: 0.8; line-height: 1.6; }
+        .info-accordion.active .accordion-content { padding: 0 20px 15px; }
+        .info-accordion.active .accordion-header i { transform: rotate(180deg); }
+
+        .btn-remove { color: #ff3d00; cursor: pointer; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-top: 8px; display: inline-block; }
+        
+        .menu-footer-links p { padding: 12px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; transition: var(--transition); }
+        .menu-footer-links p:hover { background: var(--gray); color: var(--accent); padding-left: 18px; }
     </style>
 </head>
 <body>
 
+    <!-- TELA DE CARREGAMENTO -->
+    <div id="splashScreen">
+        <img src="logo2.png" alt="Logo">
+    </div>
+
     <header>
         <i class="fas fa-bars icon-btn" onclick="toggleSidebar('filterSide')"></i>
-        <img src="logo2.png" style="height:55px; cursor:pointer" onclick="window.location.reload()">
-        <div style="display:flex; gap:20px;">
+        <img src="logo2.png" style="height:50px; cursor:pointer;" onclick="window.location.reload()">
+        <div style="display:flex; gap:20px; align-items: center;">
+            <a href="https://instagram.com/area.037" target="_blank" class="fab fa-instagram icon-btn"></a>
             <i id="themeIcon" class="fas fa-moon icon-btn" onclick="toggleTheme()"></i>
             <i class="fas fa-search icon-btn" onclick="toggleSearch()"></i>
             <div class="icon-btn" onclick="toggleSidebar('cartSide')" style="position:relative">
                 <i class="fas fa-shopping-bag"></i>
-                <span id="cartCount" style="position:absolute; top:-8px; right:-8px; background:red; color:white; font-size:0.7rem; width:18px; height:18px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:900">0</span>
+                <span id="cartCount" style="position:absolute; top:-8px; right:-8px; background:#ff3d00; color:white; font-size:0.7rem; width:18px; height:18px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:900;">0</span>
             </div>
         </div>
         <div class="search-container" id="searchBar">
@@ -99,64 +226,87 @@
 
     <a href="https://wa.me/5537998744383" target="_blank" class="wa-float"><i class="fab fa-whatsapp"></i></a>
 
-    <!-- MENU LATERAL -->
+    <!-- MENU LATERAL ESQUERDO -->
     <div id="filterSide" class="sidebar">
-        <div class="sidebar-header">
-            <h2 style="font-weight:900">MARCAS</h2>
-            <i class="fas fa-times icon-btn" onclick="toggleSidebar('filterSide')"></i>
+        <div>
+            <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                <h2 style="font-weight:900; letter-spacing: 1px;">MARCAS</h2>
+                <i class="fas fa-times icon-btn" onclick="toggleSidebar('filterSide')"></i>
+            </div>
+            <div id="filterList">
+                <p onclick="filterBy('NIKE')" style="cursor:pointer; font-weight:700; margin-bottom:12px">NIKE</p>
+                <p onclick="filterBy('MIZUNO')" style="cursor:pointer; font-weight:700; margin-bottom:12px">MIZUNO</p>
+                <p onclick="filterBy('ADIDAS')" style="cursor:pointer; font-weight:700; margin-bottom:12px">ADIDAS</p>
+                <p onclick="filterBy('PUMA')" style="cursor:pointer; font-weight:700; margin-bottom:12px">PUMA</p>
+                <p onclick="filterBy('NEW BALANCE')" style="cursor:pointer; font-weight:700; margin-bottom:12px">NEW BALANCE</p>
+                <hr style="border: none; height: 1px; background: var(--glass-border); margin: 15px 0;">
+                <div id="dynamicBrands"></div>
+            </div>
         </div>
-        <div id="filterList">
-            <p onclick="filterBy('NIKE')" style="cursor:pointer; font-weight:700; margin-bottom:12px">NIKE</p>
-            <p onclick="filterBy('MIZUNO')" style="cursor:pointer; font-weight:700; margin-bottom:12px">MIZUNO</p>
-            <p onclick="filterBy('ADIDAS')" style="cursor:pointer; font-weight:700; margin-bottom:12px">ADIDAS</p>
-            <p onclick="filterBy('PUMA')" style="cursor:pointer; font-weight:700; margin-bottom:12px">PUMA</p>
-            <p onclick="filterBy('NEW BALANCE')" style="cursor:pointer; font-weight:700; margin-bottom:12px">NEW BALANCE</p>
-            <hr style="opacity: 0.1; margin: 15px 0;">
-            <div id="dynamicBrands"></div>
+
+        <div class="menu-footer-links" style="margin-top: 20px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+            <p onclick="scrollToQuemSomos()"><i class="fas fa-users"></i> Quem Somos</p>
+            <a href="https://wa.me/5537998744383" target="_blank" style="text-decoration: none; color: inherit;">
+                <p><i class="fab fa-whatsapp"></i> Contate-nos</p>
+            </a>
         </div>
-        <p onclick="toggleSidebar('filterSide')" style="margin-top:40px; cursor:pointer; font-weight:700; opacity:0.5">FECHAR</p>
     </div>
 
     <!-- CARRINHO -->
-    <div id="cartSide" class="sidebar">
-        <div class="sidebar-header">
-            <h2 style="font-weight:900">CARRINHO</h2>
+    <div id="cartSide" class="sidebar" style="display:block;">
+        <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+            <h2 style="font-weight:900; letter-spacing: 1px;">CARRINHO</h2>
             <i class="fas fa-times icon-btn" onclick="toggleSidebar('cartSide')"></i>
         </div>
         <div id="cartItems" style="margin-top:25px; max-height: 60vh; overflow-y: auto;"></div>
-        <div style="border-top:2px solid var(--gray); padding-top:20px; margin-top:20px">
-            <p style="display:flex; justify-content:space-between">TOTAL: <b id="cartTotal">R$ 0,00</b></p>
-            <button class="btn-buy" onclick="sendToWhatsApp()" style="background:#1b5e20; color:white">FINALIZAR PEDIDO</button>
+        <div style="border-top:1px solid var(--glass-border); padding-top:20px; margin-top:20px">
+            <p style="display:flex; justify-content:space-between; font-weight: 700;">TOTAL: <b id="cartTotal" style="font-weight: 900;">R$ 0,00</b></p>
+            <button class="btn-buy" onclick="sendToWhatsApp()" style="background:#1b5e20 !important; color:white !important;">FINALIZAR PEDIDO</button>
         </div>
     </div>
 
-    <section class="london-hero">
-        <video autoplay muted loop playsinline class="hero-video-bg">
-            <source src="video.mov" type="video/mp4">
-        </video>
-        <img src="logo2.png">
-    </section>
+    <!-- VITRINE PRINCIPAL -->
+    <div id="storefrontView">
+        <section class="london-hero">
+            <video autoplay muted loop playsinline class="hero-video-bg">
+                <source src="video.mov" type="video/mp4">
+            </video>
+            <img src="logo2.png">
+        </section>
 
-    <div style="padding: 0 5% 100px;">
-        <div id="nikeSections"></div>
-        <div id="mizunoSections"></div>
-        <div class="carousel-container" id="mainBanner">
-            <div class="carousel-track" id="track"></div>
-        </div>
-        <div id="othersWrapper"></div>
-    </div>
+        <!-- Seção do Manifesto - Posicionamento mais baixo e sem divisões rígidas -->
+        <section class="hero-manifesto" id="manifestoSection">
+            <p>A ÁREA 037 é referência para quem busca sneakers de qualidade e vive o streetwear todos os dias. Desde 2022 no corre entregando estilo e autenticidade para todo o Brasil.</p>
+            <a href="https://instagram.com/area.037" target="_blank" class="instagram-badge">
+                <i class="fab fa-instagram" style="font-size: 1.1rem;"></i> Siga @area.037
+            </a>
+        </section>
 
-    <!-- MODAL DE PRODUTO -->
-    <div class="modal-overlay" id="productModal">
-        <div class="modal-content">
-            <div style="background:#f4f4f4; display:flex; align-items:center; justify-content:center">
-                <img id="modalImg" style="width:100%; height:100%; object-fit:contain; padding:20px">
+        <div style="padding: 0 5% 100px;">
+            <div id="nikeSections"></div>
+            <div id="mizunoSections"></div>
+            <div class="carousel-container" id="mainBanner">
+                <div class="carousel-track" id="track"></div>
             </div>
-            <div style="padding:40px">
-                <h2 id="modalName" style="font-weight:900; text-transform:uppercase"></h2>
-                <h3 id="modalPrice" style="margin:15px 0; color:var(--accent); font-weight:900; font-size:1.6rem"></h3>
-                <p style="margin-bottom:12px; font-weight:700; font-size:0.8rem">TAMANHO:</p>
-                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px" id="sizes">
+            <div id="othersWrapper"></div>
+        </div>
+    </div>
+
+    <!-- PÁGINA DO PRODUTO -->
+    <div id="productPage">
+        <div style="max-width: 1050px; margin: 0 auto 20px;">
+            <span onclick="closeProductPage()" style="cursor:pointer; font-weight:900; letter-spacing:1px; display:inline-flex; align-items:center; gap:10px; text-transform:uppercase; font-size:0.9rem;"><i class="fas fa-arrow-left"></i> Voltar</span>
+        </div>
+        <div class="product-page-content">
+            <div style="background:rgba(255,255,255,0.01); display:flex; align-items:center; justify-content:center">
+                <img id="modalImg" style="width:100%; max-height:500px; object-fit:contain; padding:20px; filter: drop-shadow(0 8px 25px rgba(0,0,0,0.1));">
+            </div>
+            <div style="padding:40px; display:flex; flex-direction:column; justify-content:center;">
+                <h2 id="modalName" style="font-weight:900; text-transform:uppercase; letter-spacing: 0.5px; line-height: 1.2; font-size: 1.8rem;"></h2>
+                <h3 id="modalPrice" style="margin:15px 0 25px; color:var(--accent); font-weight:900; font-size:2rem;"></h3>
+                
+                <p style="margin-bottom:12px; font-weight:700; font-size:0.8rem; opacity: 0.7; letter-spacing: 1px;">SELECIONE O TAMANHO:</p>
+                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:10px;" id="sizes">
                     <div class="size-btn" onclick="selectSize(this)">38</div>
                     <div class="size-btn" onclick="selectSize(this)">39</div>
                     <div class="size-btn" onclick="selectSize(this)">40</div>
@@ -164,13 +314,45 @@
                     <div class="size-btn" onclick="selectSize(this)">42</div>
                     <div class="size-btn" onclick="selectSize(this)">43</div>
                 </div>
-                <button class="btn-buy" onclick="confirmCart()">ADICIONAR AO CARRINHO</button>
-                <p onclick="closeModal()" style="text-align:center; margin-top:20px; cursor:pointer; opacity:0.4">FECHAR</p>
+
+                <button class="btn-buy" onclick="confirmCart()">Adicionar ao Carrinho</button>
+
+                <!-- SANFONAS -->
+                <div class="info-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Opções de Envio</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>📦 <b>Correios (Sedex / PAC):</b> Envio para todo o Brasil com código de rastreamento enviado via WhatsApp.</p>
+                        <p style="margin-top:8px;">🚀 <b>Motoboy:</b> Entrega expressa na região (consulte taxas de entrega local).</p>
+                    </div>
+                </div>
+
+                <div class="info-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Opções de Pagamento</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>⚡ <b>Pix:</b> Pagamento instantâneo com 5% de desconto.</p>
+                        <p style="margin-top:8px;">💳 <b>Cartão de Crédito:</b> Parcelamos em até 12x através de link seguro do Mercado Pago.</p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
     <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splashScreen');
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
+            }, 2000);
+        });
+
         const firebaseConfig = {
             apiKey: "AIzaSyBgjv7At7-QVc6zw0_oLtTxrzSK7nY6Cug",
             authDomain: "area-037.firebaseapp.com",
@@ -213,9 +395,7 @@
             const mizunoSections = document.getElementById('mizunoSections');
             const othersWrapper = document.getElementById('othersWrapper');
             
-            nikeSections.innerHTML = ''; 
-            mizunoSections.innerHTML = '';
-            othersWrapper.innerHTML = '';
+            nikeSections.innerHTML = ''; mizunoSections.innerHTML = ''; othersWrapper.innerHTML = '';
 
             const cleanList = list.map(p => ({
                 ...p,
@@ -223,7 +403,6 @@
                 nameUpper: p.name.toUpperCase()
             })).sort((a, b) => a.nameUpper.localeCompare(b.nameUpper));
 
-            // --- SEÇÃO NIKE ---
             let nikeProducts = cleanList.filter(p => p.brandClean === 'NIKE');
             nikeCategories.forEach(cat => {
                 const filtered = nikeProducts.filter(p => p.nameUpper.includes(cat.key));
@@ -236,13 +415,11 @@
                 nikeSections.innerHTML += `<h2 class="brand-title">OUTROS MODELOS NIKE</h2><div class="grid">${nikeProducts.map(p => card(p)).join('')}</div>`;
             }
 
-            // --- SEÇÃO MIZUNO ---
             let mizunoProducts = cleanList.filter(p => p.brandClean === 'MIZUNO');
             if(mizunoProducts.length > 0) {
                 mizunoSections.innerHTML += `<h2 class="brand-title">MIZUNO</h2><div class="grid">${mizunoProducts.map(p => card(p)).join('')}</div>`;
             }
 
-            // --- OUTRAS MARCAS ---
             const otherBrands = [...new Set(cleanList.map(p => p.brandClean))].filter(b => !['NIKE','MIZUNO','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
             
             ['ADIDAS','PUMA','NEW BALANCE'].forEach(brandName => {
@@ -258,11 +435,11 @@
 
         function card(p) {
             return `
-                <div class="p-card" onclick="openPopup('${p.id}')">
-                    <img src="${p.img}" style="width:100%; aspect-ratio:1/1; object-fit:cover">
-                    <div style="padding:15px">
-                        <p style="font-weight:700; font-size:0.9rem; height:42px; overflow:hidden; text-transform:uppercase">${p.name}</p>
-                        <p style="font-weight:900; font-size:1.1rem; margin-top:8px">R$ ${Number(p.price).toLocaleString('pt-br', {minimumFractionDigits:2})}</p>
+                <div class="p-card" onclick="openProductPage('${p.id}')">
+                    <img src="${p.img}" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+                    <div style="padding:20px">
+                        <p style="font-weight:700; font-size:0.9rem; height:42px; overflow:hidden; text-transform:uppercase; color:var(--text);">${p.name}</p>
+                        <p style="font-weight:900; font-size:1.15rem; margin-top:12px; color:var(--accent)">R$ ${Number(p.price).toLocaleString('pt-br', {minimumFractionDigits:2})}</p>
                     </div>
                 </div>`;
         }
@@ -277,25 +454,42 @@
             if(brand === 'ALL') organizeGrid(allProducts);
             else organizeGrid(allProducts.filter(p => p.brand.trim().toUpperCase() === brand));
             toggleSidebar('filterSide');
+            closeProductPage();
             window.scrollTo({top: 500, behavior: 'smooth'});
         }
 
-        function openPopup(id) {
+        function scrollToQuemSomos() {
+            toggleSidebar('filterSide');
+            closeProductPage();
+            document.getElementById('manifestoSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function openProductPage(id) {
             selectedProduct = allProducts.find(p => p.id === id);
             document.getElementById('modalImg').src = selectedProduct.img;
             document.getElementById('modalName').innerText = selectedProduct.name;
             document.getElementById('modalPrice').innerText = "R$ " + Number(selectedProduct.price).toLocaleString('pt-br', {minimumFractionDigits:2});
-            document.getElementById('productModal').style.display = 'flex';
+            
+            document.getElementById('storefrontView').style.display = 'none';
+            document.getElementById('productPage').style.display = 'block';
+            window.scrollTo(0,0);
         }
 
-        function closeModal() { document.getElementById('productModal').style.display = 'none'; selectedSize = null; }
+        function closeProductPage() { 
+            document.getElementById('productPage').style.display = 'none'; 
+            document.getElementById('storefrontView').style.display = 'block';
+            selectedSize = null; 
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            document.querySelectorAll('.info-accordion').forEach(a => { a.classList.remove('active'); a.querySelector('.accordion-content').style.maxHeight = null; });
+        }
+        
         function selectSize(btn) { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedSize = btn.innerText; }
 
         function confirmCart() {
             if(!selectedSize) return alert("Selecione o tamanho!");
             cart.push({...selectedProduct, size: selectedSize, cartId: Date.now()});
             updateCart();
-            closeModal();
+            closeProductPage();
             toggleSidebar('cartSide');
         }
 
@@ -303,12 +497,12 @@
             document.getElementById('cartCount').innerText = cart.length;
             const div = document.getElementById('cartItems');
             div.innerHTML = cart.map((item, i) => `
-                <div style="display:flex; gap:10px; margin-bottom:15px; background:var(--gray); padding:10px; border-radius:10px; animation: fadeIn 0.3s ease;">
-                    <img src="${item.img}" style="width:50px; height:50px; object-fit:cover; border-radius:5px">
+                <div style="display:flex; gap:12px; margin-bottom:15px; background:var(--gray); padding:12px; border: 1px solid var(--glass-border); border-radius:14px;">
+                    <img src="${item.img}" style="width:55px; height:55px; object-fit:cover; border-radius:8px;">
                     <div style="flex:1">
-                        <p style="font-size:0.7rem; font-weight:700; text-transform:uppercase">${item.name}</p>
-                        <p style="font-size:0.6rem">TAM: ${item.size}</p>
-                        <p style="font-weight:900; font-size:0.8rem">R$ ${item.price}</p>
+                        <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text);">${item.name}</p>
+                        <p style="font-size:0.65rem; margin-top:2px; font-weight:700; opacity:0.6;">TAM: ${item.size}</p>
+                        <p style="font-weight:900; font-size:0.85rem; margin-top:4px; color:var(--accent)">R$ ${item.price}</p>
                         <span class="btn-remove" onclick="removeFromCart(${i})">Remover</span>
                     </div>
                 </div>`).join('');
@@ -316,10 +510,7 @@
             document.getElementById('cartTotal').innerText = "R$ " + total.toLocaleString('pt-br', {minimumFractionDigits:2});
         }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCart();
-        }
+        function removeFromCart(index) { cart.splice(index, 1); updateCart(); }
 
         function sendToWhatsApp() {
             if(!cart.length) return;
@@ -327,6 +518,17 @@
             cart.forEach(i => msg += `• ${i.name} (${i.size}) - R$ ${i.price}\n`);
             msg += `\n*TOTAL: ${document.getElementById('cartTotal').innerText}*`;
             window.open(`https://wa.me/5537998744383?text=${encodeURIComponent(msg)}`);
+        }
+
+        function toggleAccordion(header) {
+            const accordion = header.parentElement;
+            const content = accordion.querySelector('.accordion-content');
+            accordion.classList.toggle('active');
+            if (accordion.classList.contains('active')) {
+                content.style.maxHeight = content.scrollHeight + "px";
+            } else {
+                content.style.maxHeight = null;
+            }
         }
 
         function toggleSidebar(id) { document.getElementById(id).classList.toggle('active'); }
