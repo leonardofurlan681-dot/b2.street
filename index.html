@@ -74,17 +74,14 @@
         .search-container.active { display: flex; animation: fadeIn 0.3s ease; }
         .search-container input { flex: 1; border: none; outline: none; font-size: 1.2rem; background: transparent; color: var(--text); font-weight: 700; letter-spacing: 1px; }
 
-        /* Nova Estrutura de Herói - Sem fundo sólido e com máscara de transparência no vídeo */
         .london-hero { width: 100%; height: 65vh; margin-top: 80px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
         .hero-video-bg { 
             position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; opacity: 0.85; filter: saturate(1.1);
-            /* Faz o próprio vídeo sumir suavemente de baixo para cima integrado ao fundo do site */
             -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
             mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
         }
         .london-hero img { width: 240px; z-index: 2; position: relative; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6)); }
 
-        /* Espaçamento Inteligente do Manifesto */
         .hero-manifesto {
             padding: 60px 10% 40px;
             text-align: center;
@@ -105,13 +102,11 @@
             letter-spacing: 0.5px;
             opacity: 0.95;
         }
-        /* No modo escuro garantimos um belo realce */
         body.dark-mode .hero-manifesto p {
             color: #ffffff;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        /* Botão do Instagram Customizado */
         .instagram-badge {
             display: inline-flex;
             align-items: center;
@@ -170,6 +165,14 @@
             .product-page-content { grid-template-columns: 1fr; border-radius: 24px; } 
         }
 
+        /* Galeria de Fotos Miniaturas */
+        .gallery-container { display: flex; flex-direction: column; gap: 15px; width: 100%; padding: 20px; }
+        .main-img-wrapper { background: rgba(255,255,255,0.01); display: flex; align-items: center; justify-content: center; width: 100%; }
+        .thumb-list { display: flex; gap: 10px; justify-content: center; overflow-x: auto; padding-bottom: 5px; }
+        .thumb-img { width: 65px; height: 65px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition: var(--transition); background: rgba(255,255,255,0.1); }
+        .thumb-img:hover { transform: scale(1.05); }
+        .thumb-img.active { border-color: var(--accent); }
+
         .size-btn { padding: 14px; border: 1px solid var(--glass-border); background: var(--gray); text-align: center; cursor: pointer; border-radius: 12px; font-weight: 700; transition: var(--transition); color: var(--text); }
         .size-btn:hover { background: rgba(255,255,255,0.5); }
         .size-btn.selected { background: var(--text); color: #fff !important; }
@@ -201,352 +204,402 @@
 </head>
 <body>
 
-    <!-- TELA DE CARREGAMENTO -->
-    <div id="splashScreen">
-        <img src="logo2.png" alt="Logo">
-    </div>
+  <!-- TELA DE CARREGAMENTO -->
+<div id="splashScreen">
+    <img src="logo2.png" alt="Logo">
+</div>
 
-    <header>
-        <i class="fas fa-bars icon-btn" onclick="toggleSidebar('filterSide')"></i>
-        <img src="logo2.png" style="height:50px; cursor:pointer;" onclick="window.location.reload()">
-        <div style="display:flex; gap:20px; align-items: center;">
-            <a href="https://instagram.com/area.037" target="_blank" class="fab fa-instagram icon-btn"></a>
-            <i id="themeIcon" class="fas fa-moon icon-btn" onclick="toggleTheme()"></i>
-            <i class="fas fa-search icon-btn" onclick="toggleSearch()"></i>
-            <div class="icon-btn" onclick="toggleSidebar('cartSide')" style="position:relative">
-                <i class="fas fa-shopping-bag"></i>
-                <span id="cartCount" style="position:absolute; top:-8px; right:-8px; background:#ff3d00; color:white; font-size:0.7rem; width:18px; height:18px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:900;">0</span>
-            </div>
-        </div>
-        <div class="search-container" id="searchBar">
-            <input type="text" id="searchInput" placeholder="BUSCAR MODELO..." oninput="realTimeSearch()">
-            <i class="fas fa-times icon-btn" onclick="toggleSearch()"></i>
-        </div>
-    </header>
-
-    <a href="https://wa.me/5537998744383" target="_blank" class="wa-float"><i class="fab fa-whatsapp"></i></a>
-
-    <!-- MENU LATERAL ESQUERDO -->
-    <div id="filterSide" class="sidebar">
-        <div>
-            <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-                <h2 style="font-weight:900; letter-spacing: 1px;">MARCAS</h2>
-                <i class="fas fa-times icon-btn" onclick="toggleSidebar('filterSide')"></i>
-            </div>
-            <div id="filterList">
-                <p onclick="filterBy('NIKE')" style="cursor:pointer; font-weight:700; margin-bottom:12px">NIKE</p>
-                <p onclick="filterBy('MIZUNO')" style="cursor:pointer; font-weight:700; margin-bottom:12px">MIZUNO</p>
-                <p onclick="filterBy('ADIDAS')" style="cursor:pointer; font-weight:700; margin-bottom:12px">ADIDAS</p>
-                <p onclick="filterBy('PUMA')" style="cursor:pointer; font-weight:700; margin-bottom:12px">PUMA</p>
-                <p onclick="filterBy('NEW BALANCE')" style="cursor:pointer; font-weight:700; margin-bottom:12px">NEW BALANCE</p>
-                <hr style="border: none; height: 1px; background: var(--glass-border); margin: 15px 0;">
-                <div id="dynamicBrands"></div>
-            </div>
-        </div>
-
-        <div class="menu-footer-links" style="margin-top: 20px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
-            <p onclick="scrollToQuemSomos()"><i class="fas fa-users"></i> Quem Somos</p>
-            <a href="https://wa.me/5537998744383" target="_blank" style="text-decoration: none; color: inherit;">
-                <p><i class="fab fa-whatsapp"></i> Contate-nos</p>
-            </a>
+<header>
+    <i class="fas fa-bars icon-btn" onclick="toggleSidebar('filterSide')"></i>
+    <img src="logo2.png" style="height:50px; cursor:pointer;" onclick="window.location.reload()">
+    <div style="display:flex; gap:20px; align-items: center;">
+        <a href="https://instagram.com/area.037" target="_blank" class="fab fa-instagram icon-btn"></a>
+        <i id="themeIcon" class="fas fa-moon icon-btn" onclick="toggleTheme()"></i>
+        <i class="fas fa-search icon-btn" onclick="toggleSearch()"></i>
+        <div class="icon-btn" onclick="toggleSidebar('cartSide')" style="position:relative">
+            <i class="fas fa-shopping-bag"></i>
+            <span id="cartCount" style="position:absolute; top:-8px; right:-8px; background:#ff3d00; color:white; font-size:0.7rem; width:18px; height:18px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:900;">0</span>
         </div>
     </div>
+    <div class="search-container" id="searchBar">
+        <input type="text" id="searchInput" placeholder="BUSCAR MODELO..." oninput="realTimeSearch()">
+        <i class="fas fa-times icon-btn" onclick="toggleSearch()"></i>
+    </div>
+</header>
 
-    <!-- CARRINHO -->
-    <div id="cartSide" class="sidebar" style="display:block;">
+<a href="https://wa.me/5537998744383" target="_blank" class="wa-float"><i class="fab fa-whatsapp"></i></a>
+
+<!-- MENU LATERAL ESQUERDO -->
+<div id="filterSide" class="sidebar">
+    <div>
         <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <h2 style="font-weight:900; letter-spacing: 1px;">CARRINHO</h2>
-            <i class="fas fa-times icon-btn" onclick="toggleSidebar('cartSide')"></i>
+            <h2 style="font-weight:900; letter-spacing: 1px;">MARCAS</h2>
+            <i class="fas fa-times icon-btn" onclick="toggleSidebar('filterSide')"></i>
         </div>
-        <div id="cartItems" style="margin-top:25px; max-height: 60vh; overflow-y: auto;"></div>
-        <div style="border-top:1px solid var(--glass-border); padding-top:20px; margin-top:20px">
-            <p style="display:flex; justify-content:space-between; font-weight: 700;">TOTAL: <b id="cartTotal" style="font-weight: 900;">R$ 0,00</b></p>
-            <button class="btn-buy" onclick="sendToWhatsApp()" style="background:#1b5e20 !important; color:white !important;">FINALIZAR PEDIDO</button>
-        </div>
-    </div>
-
-    <!-- VITRINE PRINCIPAL -->
-    <div id="storefrontView">
-        <section class="london-hero">
-            <video autoplay muted loop playsinline class="hero-video-bg">
-                <source src="video.mov" type="video/mp4">
-            </video>
-            <img src="logo2.png">
-        </section>
-
-        <!-- Seção do Manifesto - Posicionamento mais baixo e sem divisões rígidas -->
-        <section class="hero-manifesto" id="manifestoSection">
-            <p>A ÁREA 037 é referência para quem busca sneakers de qualidade e vive o streetwear todos os dias. Desde 2022 no corre entregando estilo e autenticidade para todo o Brasil.</p>
-            <a href="https://instagram.com/area.037" target="_blank" class="instagram-badge">
-                <i class="fab fa-instagram" style="font-size: 1.1rem;"></i> Siga @area.037
-            </a>
-        </section>
-
-        <div style="padding: 0 5% 100px;">
-            <div id="nikeSections"></div>
-            <div id="mizunoSections"></div>
-            <div class="carousel-container" id="mainBanner">
-                <div class="carousel-track" id="track"></div>
-            </div>
-            <div id="othersWrapper"></div>
+        <div id="filterList">
+            <p onclick="filterBy('NIKE')" style="cursor:pointer; font-weight:700; margin-bottom:12px">NIKE</p>
+            <p onclick="filterBy('MIZUNO')" style="cursor:pointer; font-weight:700; margin-bottom:12px">MIZUNO</p>
+            <p onclick="filterBy('ADIDAS')" style="cursor:pointer; font-weight:700; margin-bottom:12px">ADIDAS</p>
+            <p onclick="filterBy('PUMA')" style="cursor:pointer; font-weight:700; margin-bottom:12px">PUMA</p>
+            <p onclick="filterBy('NEW BALANCE')" style="cursor:pointer; font-weight:700; margin-bottom:12px">NEW BALANCE</p>
+            <hr style="border: none; height: 1px; background: var(--glass-border); margin: 15px 0;">
+            <div id="dynamicBrands"></div>
         </div>
     </div>
 
-    <!-- PÁGINA DO PRODUTO -->
-    <div id="productPage">
-        <div style="max-width: 1050px; margin: 0 auto 20px;">
-            <span onclick="closeProductPage()" style="cursor:pointer; font-weight:900; letter-spacing:1px; display:inline-flex; align-items:center; gap:10px; text-transform:uppercase; font-size:0.9rem;"><i class="fas fa-arrow-left"></i> Voltar</span>
-        </div>
-        <div class="product-page-content">
-            <div style="background:rgba(255,255,255,0.01); display:flex; align-items:center; justify-content:center">
-                <img id="modalImg" style="width:100%; max-height:500px; object-fit:contain; padding:20px; filter: drop-shadow(0 8px 25px rgba(0,0,0,0.1));">
-            </div>
-            <div style="padding:40px; display:flex; flex-direction:column; justify-content:center;">
-                <h2 id="modalName" style="font-weight:900; text-transform:uppercase; letter-spacing: 0.5px; line-height: 1.2; font-size: 1.8rem;"></h2>
-                <h3 id="modalPrice" style="margin:15px 0 25px; color:var(--accent); font-weight:900; font-size:2rem;"></h3>
-                
-                <p style="margin-bottom:12px; font-weight:700; font-size:0.8rem; opacity: 0.7; letter-spacing: 1px;">SELECIONE O TAMANHO:</p>
-                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:10px;" id="sizes">
-                    <div class="size-btn" onclick="selectSize(this)">38</div>
-                    <div class="size-btn" onclick="selectSize(this)">39</div>
-                    <div class="size-btn" onclick="selectSize(this)">40</div>
-                    <div class="size-btn" onclick="selectSize(this)">41</div>
-                    <div class="size-btn" onclick="selectSize(this)">42</div>
-                    <div class="size-btn" onclick="selectSize(this)">43</div>
-                </div>
-
-                <button class="btn-buy" onclick="confirmCart()">Adicionar ao Carrinho</button>
-
-                <!-- SANFONAS -->
-                <div class="info-accordion">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span>Opções de Envio</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="accordion-content">
-                        <p>📦 <b>Correios (Sedex / PAC):</b> Envio para todo o Brasil com código de rastreamento enviado via WhatsApp.</p>
-                        <p style="margin-top:8px;">🚀 <b>Motoboy:</b> Entrega expressa na região (consulte taxas de entrega local).</p>
-                    </div>
-                </div>
-
-                <div class="info-accordion">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <span>Opções de Pagamento</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="accordion-content">
-                        <p>⚡ <b>Pix:</b> Pagamento instantâneo com 5% de desconto.</p>
-                        <p style="margin-top:8px;">💳 <b>Cartão de Crédito:</b> Parcelamos em até 12x através de link seguro do Mercado Pago.</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+    <div class="menu-footer-links" style="margin-top: 20px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+        <p onclick="scrollToQuemSomos()"><i class="fas fa-users"></i> Quem Somos</p>
+        <a href="https://wa.me/5537998744383" target="_blank" style="text-decoration: none; color: inherit;">
+            <p><i class="fab fa-whatsapp"></i> Contate-nos</p>
+        </a>
     </div>
+</div>
 
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const splash = document.getElementById('splashScreen');
-                splash.style.opacity = '0';
-                splash.style.visibility = 'hidden';
-            }, 2000);
-        });
+<!-- CARRINHO -->
+<div id="cartSide" class="sidebar" style="display:block;">
+    <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+        <h2 style="font-weight:900; letter-spacing: 1px;">CARRINHO</h2>
+        <i class="fas fa-times icon-btn" onclick="toggleSidebar('cartSide')"></i>
+    </div>
+    <div id="cartItems" style="margin-top:25px; max-height: 60vh; overflow-y: auto;"></div>
+    <div style="border-top:1px solid var(--glass-border); padding-top:20px; margin-top:20px">
+        <p style="display:flex; justify-content:space-between; font-weight: 700;">TOTAL: <b id="cartTotal" style="font-weight: 900;">R$ 0,00</b></p>
+        <button class="btn-buy" onclick="sendToWhatsApp()" style="background:#1b5e20 !important; color:white !important;">FINALIZAR PEDIDO</button>
+    </div>
+</div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBgjv7At7-QVc6zw0_oLtTxrzSK7nY6Cug",
-            authDomain: "area-037.firebaseapp.com",
-            databaseURL: "https://area-037-default-rtdb.firebaseio.com",
-            projectId: "area-037",
-            storageBucket: "area-037.firebasestorage.app",
-            messagingSenderId: "509994998279",
-            appId: "1:509994998279:web:3024b345e27de5ab0aa8a2"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+<!-- VITRINE PRINCIPAL -->
+<div id="storefrontView">
+    <section class="london-hero">
+        <video autoplay muted loop playsinline class="hero-video-bg">
+            <source src="video.mov" type="video/mp4">
+        </video>
+        <img src="logo2.png">
+    </section>
 
-        let allProducts = [], cart = [], selectedSize = null, selectedProduct = null;
+    <section class="hero-manifesto" id="manifestoSection">
+        <p>A ÁREA 037 é referência para quem busca sneakers de qualidade e vive o streetwear todos os dias. Desde 2022 no corre entregando style e autenticidade para todo o Brasil.</p>
+        <a href="https://instagram.com/area.037" target="_blank" class="instagram-badge">
+            <i class="fab fa-instagram" style="font-size: 1.1rem;"></i> Siga @area.037
+        </a>
+    </section>
 
-        const nikeCategories = [
-            { key: "SHOX", label: "NIKE SHOX" },
-            { key: "DUNK", label: "NIKE DUNK" },
-            { key: "NOCTA", label: "NIKE NOCTA" },
-            { key: "JORDAN", label: "AIR JORDAN" },
-            { key: "AIR MAX", label: "NIKE AIR MAX" },
-            { key: "AIR FORCE", label: "NIKE AIR FORCE" },
-            { key: "DN", label: "NIKE DN" },
-            { key: "TN", label: "NIKE TN / PLUS" }
-        ];
+    <div style="padding: 0 5% 100px;">
+        <div id="nikeSections"></div>
+        <div id="mizunoSections"></div>
+        <div class="carousel-container" id="mainBanner">
+            <div class="carousel-track" id="track"></div>
+        </div>
+        <div id="othersWrapper"></div>
+    </div>
+</div>
 
-        db.ref("banners").on("value", snap => {
-            const b = snap.val();
-            if(b) document.getElementById('track').innerHTML = `<img src="${b.link1}"><img src="${b.link2}"><img src="${b.link3}">`;
-        });
-
-        db.ref("produtos").on("value", snap => {
-            const data = snap.val();
-            allProducts = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
-            organizeGrid(allProducts);
-            renderDynamicFilters();
-        });
-
-        function organizeGrid(list) {
-            const nikeSections = document.getElementById('nikeSections');
-            const mizunoSections = document.getElementById('mizunoSections');
-            const othersWrapper = document.getElementById('othersWrapper');
+<!-- PÁGINA DO PRODUTO -->
+<div id="productPage">
+    <div style="max-width: 1050px; margin: 0 auto 20px;">
+        <span onclick="closeProductPage()" style="cursor:pointer; font-weight:900; letter-spacing:1px; display:inline-flex; align-items:center; gap:10px; text-transform:uppercase; font-size:0.9rem;"><i class="fas fa-arrow-left"></i> Voltar</span>
+    </div>
+    <div class="product-page-content">
+        <!-- Galeria Estruturada -->
+        <div class="gallery-container">
+            <div class="main-img-wrapper">
+                <img id="modalImg" style="width:100%; max-height:420px; object-fit:contain; padding:10px; filter: drop-shadow(0 8px 25px rgba(0,0,0,0.1));">
+            </div>
+            <div class="thumb-list" id="thumbList">
+                <!-- Gerado Dinamicamente pelo JS -->
+            </div>
+        </div>
+        
+        <div style="padding:40px; display:flex; flex-direction:column; justify-content:center;">
+            <h2 id="modalName" style="font-weight:900; text-transform:uppercase; letter-spacing: 0.5px; line-height: 1.2; font-size: 1.8rem;"></h2>
+            <h3 id="modalPrice" style="margin:15px 0 25px; color:var(--accent); font-weight:900; font-size:2rem;"></h3>
             
-            nikeSections.innerHTML = ''; mizunoSections.innerHTML = ''; othersWrapper.innerHTML = '';
+            <p style="margin-bottom:12px; font-weight:700; font-size:0.8rem; opacity: 0.7; letter-spacing: 1px;">SELECIONE O TAMANHO:</p>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:10px;" id="sizes">
+                <div class="size-btn" onclick="selectSize(this)">38</div>
+                <div class="size-btn" onclick="selectSize(this)">39</div>
+                <div class="size-btn" onclick="selectSize(this)">40</div>
+                <div class="size-btn" onclick="selectSize(this)">41</div>
+                <div class="size-btn" onclick="selectSize(this)">42</div>
+                <div class="size-btn" onclick="selectSize(this)">43</div>
+            </div>
 
-            const cleanList = list.map(p => ({
-                ...p,
-                brandClean: p.brand.trim().toUpperCase(),
-                nameUpper: p.name.toUpperCase()
-            })).sort((a, b) => a.nameUpper.localeCompare(b.nameUpper));
+            <button class="btn-buy" onclick="confirmCart()">Adicionar ao Carrinho</button>
 
-            let nikeProducts = cleanList.filter(p => p.brandClean === 'NIKE');
-            nikeCategories.forEach(cat => {
-                const filtered = nikeProducts.filter(p => p.nameUpper.includes(cat.key));
-                if(filtered.length > 0) {
-                    nikeSections.innerHTML += `<h2 class="brand-title">${cat.label}</h2><div class="grid">${filtered.map(p => card(p)).join('')}</div>`;
-                    nikeProducts = nikeProducts.filter(p => !filtered.includes(p));
-                }
-            });
-            if(nikeProducts.length > 0) {
-                nikeSections.innerHTML += `<h2 class="brand-title">OUTROS MODELOS NIKE</h2><div class="grid">${nikeProducts.map(p => card(p)).join('')}</div>`;
+            <!-- SANFONAS -->
+            <div class="info-accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Opções de Envio</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>📦 <b>Correios (Sedex / PAC):</b> Envio para todo o Brasil com código de rastreamento enviado via WhatsApp.</p>
+                    <p style="margin-top:8px;">🚀 <b>Motoboy:</b> Entrega expressa na região (consulte taxas de entrega local).</p>
+                </div>
+            </div>
+
+            <div class="info-accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Opções de Pagamento</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>⚡ <b>Pix:</b> Pagamento instantâneo com 5% de desconto.</p>
+                    <p style="margin-top:8px;">💳 <b>Cartão de Crédito:</b> Parcelamos em até 12x através de link seguro do Mercado Pago.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            const splash = document.getElementById('splashScreen');
+            splash.style.opacity = '0';
+            splash.style.visibility = 'hidden';
+        }, 2000);
+    });
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBgjv7At7-QVc6zw0_oLtTxrzSK7nY6Cug",
+        authDomain: "area-037.firebaseapp.com",
+        databaseURL: "https://area-037-default-rtdb.firebaseio.com",
+        projectId: "area-037",
+        storageBucket: "area-037.firebasestorage.app",
+        messagingSenderId: "509994998279",
+        appId: "1:509994998279:web:3024b345e27de5ab0aa8a2"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let allProducts = [], cart = [], selectedSize = null, selectedProduct = null;
+
+    // SISTEMA DE REGISTRO DE ACESSOS CORRIGIDO SEM TRAVAMENTO DE SESSIONSTORAGE
+    function trackPageView() {
+        const agora = Date.now();
+        const ultimoAcesso = localStorage.getItem('area037_last_visit');
+        
+        // Permite múltiplos aparelhos entrarem livremente. 
+        // No mesmo aparelho ele só barra temporariamente (5 min) se o cliente ficar atualizando a página direto (evita inflar o banco)
+        if (!ultimoAcesso || (agora - Number(ultimoAcesso) > 5 * 60 * 1000)) {
+            db.ref("acessos").push({
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            }).then(() => {
+                localStorage.setItem('area037_last_visit', agora.toString());
+            }).catch(err => console.log("Erro rastreio:", err));
+        }
+    }
+    trackPageView();
+
+    const nikeCategories = [
+        { key: "SHOX", label: "NIKE SHOX" },
+        { key: "DUNK", label: "NIKE DUNK" },
+        { key: "NOCTA", label: "NIKE NOCTA" },
+        { key: "JORDAN", label: "AIR JORDAN" },
+        { key: "AIR MAX", label: "NIKE AIR MAX" },
+        { key: "AIR FORCE", label: "NIKE AIR FORCE" },
+        { key: "DN", label: "NIKE DN" },
+        { key: "TN", label: "NIKE TN / PLUS" }
+    ];
+
+    db.ref("banners").on("value", snap => {
+        const b = snap.val();
+        if(b) document.getElementById('track').innerHTML = `<img src="${b.link1}"><img src="${b.link2}"><img src="${b.link3}">`;
+    });
+
+    db.ref("produtos").on("value", snap => {
+        const data = snap.val();
+        allProducts = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
+        organizeGrid(allProducts);
+        renderDynamicFilters();
+    });
+
+    function organizeGrid(list) {
+        const nikeSections = document.getElementById('nikeSections');
+        const mizunoSections = document.getElementById('mizunoSections');
+        const othersWrapper = document.getElementById('othersWrapper');
+        
+        nikeSections.innerHTML = ''; mizunoSections.innerHTML = ''; othersWrapper.innerHTML = '';
+
+        const cleanList = list.map(p => ({
+            ...p,
+            brandClean: p.brand.trim().toUpperCase(),
+            nameUpper: p.name.toUpperCase()
+        })).sort((a, b) => a.nameUpper.localeCompare(b.nameUpper));
+
+        let nikeProducts = cleanList.filter(p => p.brandClean === 'NIKE');
+        nikeCategories.forEach(cat => {
+            const filtered = nikeProducts.filter(p => p.nameUpper.includes(cat.key));
+            if(filtered.length > 0) {
+                nikeSections.innerHTML += `<h2 class="brand-title">${cat.label}</h2><div class="grid">${filtered.map(p => card(p)).join('')}</div>`;
+                nikeProducts = nikeProducts.filter(p => !filtered.includes(p));
             }
+        });
+        if(nikeProducts.length > 0) {
+            nikeSections.innerHTML += `<h2 class="brand-title">OUTROS MODELOS NIKE</h2><div class="grid">${nikeProducts.map(p => card(p)).join('')}</div>`;
+        }
 
-            let mizunoProducts = cleanList.filter(p => p.brandClean === 'MIZUNO');
-            if(mizunoProducts.length > 0) {
-                mizunoSections.innerHTML += `<h2 class="brand-title">MIZUNO</h2><div class="grid">${mizunoProducts.map(p => card(p)).join('')}</div>`;
+        let mizunoProducts = cleanList.filter(p => p.brandClean === 'MIZUNO');
+        if(mizunoProducts.length > 0) {
+            mizunoSections.innerHTML += `<h2 class="brand-title">MIZUNO</h2><div class="grid">${mizunoProducts.map(p => card(p)).join('')}</div>`;
+        }
+
+        const otherBrands = [...new Set(cleanList.map(p => p.brandClean))].filter(b => !['NIKE','MIZUNO','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
+        
+        ['ADIDAS','PUMA','NEW BALANCE'].forEach(brandName => {
+            const bProducts = cleanList.filter(p => p.brandClean === brandName);
+            if(bProducts.length > 0) othersWrapper.innerHTML += `<h2 class="brand-title">${brandName}</h2><div class="grid">${bProducts.map(p => card(p)).join('')}</div>`;
+        });
+
+        otherBrands.forEach(brand => {
+            const brandProducts = cleanList.filter(p => p.brandClean === brand);
+            othersWrapper.innerHTML += `<h2 class="brand-title">${brand}</h2><div class="grid">${brandProducts.map(p => card(p)).join('')}</div>`;
+        });
+    }
+
+    function card(p) {
+        return `
+            <div class="p-card" onclick="openProductPage('${p.id}')">
+                <img src="${p.img}" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+                <div style="padding:20px">
+                    <p style="font-weight:700; font-size:0.9rem; height:42px; overflow:hidden; text-transform:uppercase; color:var(--text);">${p.name}</p>
+                    <p style="font-weight:900; font-size:1.15rem; margin-top:12px; color:var(--accent)">R$ ${Number(p.price).toLocaleString('pt-br', {minimumFractionDigits:2})}</p>
+                </div>
+            </div>`;
+    }
+
+    function renderDynamicFilters() {
+        const container = document.getElementById('dynamicBrands');
+        const brands = [...new Set(allProducts.map(p => p.brand.trim().toUpperCase()))].filter(b => !['NIKE','MIZUNO','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
+        container.innerHTML = brands.map(b => `<p onclick="filterBy('${b}')" style="cursor:pointer; font-weight:700; margin-bottom:12px">${b}</p>`).join('');
+    }
+
+    function filterBy(brand) {
+        if(brand === 'ALL') organizeGrid(allProducts);
+        else organizeGrid(allProducts.filter(p => p.brand.trim().toUpperCase() === brand));
+        toggleSidebar('filterSide');
+        closeProductPage();
+        window.scrollTo({top: 500, behavior: 'smooth'});
+    }
+
+    function scrollToQuemSomos() {
+        toggleSidebar('filterSide');
+        closeProductPage();
+        document.getElementById('manifestoSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function openProductPage(id) {
+        selectedProduct = allProducts.find(p => p.id === id);
+        
+        const mainImg = document.getElementById('modalImg');
+        mainImg.src = selectedProduct.img;
+        
+        document.getElementById('modalName').innerText = selectedProduct.name;
+        document.getElementById('modalPrice').innerText = "R$ " + Number(selectedProduct.price).toLocaleString('pt-br', {minimumFractionDigits:2});
+        
+        const thumbList = document.getElementById('thumbList');
+        thumbList.innerHTML = '';
+        
+        const photoKeys = ['img', 'img2', 'img3', 'img4', 'img5'];
+        let validPhotos = [];
+        
+        photoKeys.forEach(key => {
+            if(selectedProduct[key] && selectedProduct[key].trim() !== "") {
+                validPhotos.push(selectedProduct[key]);
             }
-
-            const otherBrands = [...new Set(cleanList.map(p => p.brandClean))].filter(b => !['NIKE','MIZUNO','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
-            
-            ['ADIDAS','PUMA','NEW BALANCE'].forEach(brandName => {
-                const bProducts = cleanList.filter(p => p.brandClean === brandName);
-                if(bProducts.length > 0) othersWrapper.innerHTML += `<h2 class="brand-title">${brandName}</h2><div class="grid">${bProducts.map(p => card(p)).join('')}</div>`;
+        });
+        
+        if(validPhotos.length > 1) {
+            validPhotos.forEach((photoUrl, index) => {
+                const isActive = index === 0 ? 'active' : '';
+                thumbList.innerHTML += `<img src="${photoUrl}" class="thumb-img ${isActive}" onclick="changeProductPhoto(this, '${photoUrl}')">`;
             });
-
-            otherBrands.forEach(brand => {
-                const brandProducts = cleanList.filter(p => p.brandClean === brand);
-                othersWrapper.innerHTML += `<h2 class="brand-title">${brand}</h2><div class="grid">${brandProducts.map(p => card(p)).join('')}</div>`;
-            });
-        }
-
-        function card(p) {
-            return `
-                <div class="p-card" onclick="openProductPage('${p.id}')">
-                    <img src="${p.img}" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
-                    <div style="padding:20px">
-                        <p style="font-weight:700; font-size:0.9rem; height:42px; overflow:hidden; text-transform:uppercase; color:var(--text);">${p.name}</p>
-                        <p style="font-weight:900; font-size:1.15rem; margin-top:12px; color:var(--accent)">R$ ${Number(p.price).toLocaleString('pt-br', {minimumFractionDigits:2})}</p>
-                    </div>
-                </div>`;
-        }
-
-        function renderDynamicFilters() {
-            const container = document.getElementById('dynamicBrands');
-            const brands = [...new Set(allProducts.map(p => p.brand.trim().toUpperCase()))].filter(b => !['NIKE','MIZUNO','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
-            container.innerHTML = brands.map(b => `<p onclick="filterBy('${b}')" style="cursor:pointer; font-weight:700; margin-bottom:12px">${b}</p>`).join('');
-        }
-
-        function filterBy(brand) {
-            if(brand === 'ALL') organizeGrid(allProducts);
-            else organizeGrid(allProducts.filter(p => p.brand.trim().toUpperCase() === brand));
-            toggleSidebar('filterSide');
-            closeProductPage();
-            window.scrollTo({top: 500, behavior: 'smooth'});
-        }
-
-        function scrollToQuemSomos() {
-            toggleSidebar('filterSide');
-            closeProductPage();
-            document.getElementById('manifestoSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        function openProductPage(id) {
-            selectedProduct = allProducts.find(p => p.id === id);
-            document.getElementById('modalImg').src = selectedProduct.img;
-            document.getElementById('modalName').innerText = selectedProduct.name;
-            document.getElementById('modalPrice').innerText = "R$ " + Number(selectedProduct.price).toLocaleString('pt-br', {minimumFractionDigits:2});
-            
-            document.getElementById('storefrontView').style.display = 'none';
-            document.getElementById('productPage').style.display = 'block';
-            window.scrollTo(0,0);
-        }
-
-        function closeProductPage() { 
-            document.getElementById('productPage').style.display = 'none'; 
-            document.getElementById('storefrontView').style.display = 'block';
-            selectedSize = null; 
-            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-            document.querySelectorAll('.info-accordion').forEach(a => { a.classList.remove('active'); a.querySelector('.accordion-content').style.maxHeight = null; });
         }
         
-        function selectSize(btn) { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedSize = btn.innerText; }
+        document.getElementById('storefrontView').style.display = 'none';
+        document.getElementById('productPage').style.display = 'block';
+        window.scrollTo(0,0);
+    }
 
-        function confirmCart() {
-            if(!selectedSize) return alert("Selecione o tamanho!");
-            cart.push({...selectedProduct, size: selectedSize, cartId: Date.now()});
-            updateCart();
-            closeProductPage();
-            toggleSidebar('cartSide');
+    function changeProductPhoto(element, url) {
+        document.getElementById('modalImg').src = url;
+        document.querySelectorAll('.thumb-img').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+    }
+
+    function closeProductPage() { 
+        document.getElementById('productPage').style.display = 'none'; 
+        document.getElementById('storefrontView').style.display = 'block';
+        selectedSize = null; 
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+        document.querySelectorAll('.info-accordion').forEach(a => { a.classList.remove('active'); a.querySelector('.accordion-content').style.maxHeight = null; });
+    }
+    
+    function selectSize(btn) { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedSize = btn.innerText; }
+
+    function confirmCart() {
+        if(!selectedSize) return alert("Selecione o tamanho!");
+        cart.push({...selectedProduct, size: selectedSize, cartId: Date.now()});
+        updateCart();
+        closeProductPage();
+        toggleSidebar('cartSide');
+    }
+
+    function updateCart() {
+        document.getElementById('cartCount').innerText = cart.length;
+        const div = document.getElementById('cartItems');
+        div.innerHTML = cart.map((item, i) => `
+            <div style="display:flex; gap:12px; margin-bottom:15px; background:var(--gray); padding:12px; border: 1px solid var(--glass-border); border-radius:14px;">
+                <img src="${item.img}" style="width:55px; height:55px; object-fit:cover; border-radius:8px;">
+                <div style="flex:1">
+                    <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text);">${item.name}</p>
+                    <p style="font-size:0.65rem; margin-top:2px; font-weight:700; opacity:0.6;">TAM: ${item.size}</p>
+                    <p style="font-weight:900; font-size:0.85rem; margin-top:4px; color:var(--accent)">R$ ${item.price}</p>
+                    <span class="btn-remove" onclick="removeFromCart(${i})">Remover</span>
+                </div>
+            </div>`).join('');
+        const total = cart.reduce((s, i) => s + Number(i.price), 0);
+        document.getElementById('cartTotal').innerText = "R$ " + total.toLocaleString('pt-br', {minimumFractionDigits:2});
+    }
+
+    function removeFromCart(index) { cart.splice(index, 1); updateCart(); }
+
+    function sendToWhatsApp() {
+        if(!cart.length) return;
+        let msg = "🛒 *NOVO PEDIDO ÁREA 037*\n\n";
+        cart.forEach(i => msg += `• ${i.name} (${i.size}) - R$ ${i.price}\n`);
+        msg += `\n*TOTAL: ${document.getElementById('cartTotal').innerText}*`;
+        window.open(`https://wa.me/5537998744383?text=${encodeURIComponent(msg)}`);
+    }
+
+    function toggleAccordion(header) {
+        const accordion = header.parentElement;
+        const content = accordion.querySelector('.accordion-content');
+        accordion.classList.toggle('active');
+        if (accordion.classList.contains('active')) {
+            content.style.maxHeight = content.scrollHeight + "px";
+        } else {
+            content.style.maxHeight = null;
         }
+    }
 
-        function updateCart() {
-            document.getElementById('cartCount').innerText = cart.length;
-            const div = document.getElementById('cartItems');
-            div.innerHTML = cart.map((item, i) => `
-                <div style="display:flex; gap:12px; margin-bottom:15px; background:var(--gray); padding:12px; border: 1px solid var(--glass-border); border-radius:14px;">
-                    <img src="${item.img}" style="width:55px; height:55px; object-fit:cover; border-radius:8px;">
-                    <div style="flex:1">
-                        <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text);">${item.name}</p>
-                        <p style="font-size:0.65rem; margin-top:2px; font-weight:700; opacity:0.6;">TAM: ${item.size}</p>
-                        <p style="font-weight:900; font-size:0.85rem; margin-top:4px; color:var(--accent)">R$ ${item.price}</p>
-                        <span class="btn-remove" onclick="removeFromCart(${i})">Remover</span>
-                    </div>
-                </div>`).join('');
-            const total = cart.reduce((s, i) => s + Number(i.price), 0);
-            document.getElementById('cartTotal').innerText = "R$ " + total.toLocaleString('pt-br', {minimumFractionDigits:2});
-        }
+    // Chamadas globais de interface
+    function toggleSidebar(id) { document.getElementById(id).classList.toggle('active'); }
+    function toggleSearch() { document.getElementById('searchBar').classList.toggle('active'); }
+    function toggleTheme() { document.body.classList.toggle('dark-mode'); }
 
-        function removeFromCart(index) { cart.splice(index, 1); updateCart(); }
+    function realTimeSearch() {
+        const term = document.getElementById('searchInput').value.toUpperCase();
+        const filtered = allProducts.filter(p => p.name.toUpperCase().includes(term) || p.brand.toUpperCase().includes(term));
+        organizeGrid(filtered);
+    }
 
-        function sendToWhatsApp() {
-            if(!cart.length) return;
-            let msg = "🛒 *NOVO PEDIDO ÁREA 037*\n\n";
-            cart.forEach(i => msg += `• ${i.name} (${i.size}) - R$ ${i.price}\n`);
-            msg += `\n*TOTAL: ${document.getElementById('cartTotal').innerText}*`;
-            window.open(`https://wa.me/5537998744383?text=${encodeURIComponent(msg)}`);
-        }
-
-        function toggleAccordion(header) {
-            const accordion = header.parentElement;
-            const content = accordion.querySelector('.accordion-content');
-            accordion.classList.toggle('active');
-            if (accordion.classList.contains('active')) {
-                content.style.maxHeight = content.scrollHeight + "px";
-            } else {
-                content.style.maxHeight = null;
-            }
-        }
-
-        function toggleSidebar(id) { document.getElementById(id).classList.toggle('active'); }
-        function toggleSearch() { document.getElementById('searchBar').classList.toggle('active'); }
-        function toggleTheme() { document.body.classList.toggle('dark-mode'); }
-
-        function realTimeSearch() {
-            const term = document.getElementById('searchInput').value.toUpperCase();
-            const filtered = allProducts.filter(p => p.name.toUpperCase().includes(term) || p.brand.toUpperCase().includes(term));
-            organizeGrid(filtered);
-        }
-
-        let slide = 0;
-        setInterval(() => {
-            slide = (slide + 1) % 3;
-            const t = document.getElementById('track');
-            if(t) t.style.transform = `translateX(-${slide * 100}%)`;
-        }, 5000);
-    </script>
-</body>
-</html>
+    let slide = 0;
+    setInterval(() => {
+        slide = (slide + 1) % 3;
+        const t = document.getElementById('track');
+        if(t) t.style.transform = `translateX(-${slide * 100}%)`;
+    }, 5000);
+</script>
