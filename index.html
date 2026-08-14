@@ -105,7 +105,7 @@
             font-size: 1.1rem; color: var(--text-main); pointer-events: none;
         }
 
-        /* SELEÇÃO DE MODELOS (CATEGORIAS EM CHIPS HORIZONTAIS) */
+        /* SELEÇÃO DE MODELOS */
         .models-bar-container {
             background: var(--bg-card);
             padding: 12px 4%;
@@ -161,54 +161,56 @@
         }
         .wa-float:hover { transform: scale(1.1) rotate(8deg); }
 
-       /* Hero com Imagem Responsive (Mobile vs Desktop) */
-.london-hero { 
-    width: 100%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    position: relative; 
-    overflow: hidden; 
-    background: #000; 
-}
+        /* Hero Container Responsivo */
+        .london-hero { 
+            width: 100%; 
+            background: #000; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.hero-img-bg { 
-    width: 100%;
-    height: auto;
-    max-height: 80vh;
-    display: block;
-    object-fit: contain; /* Alterado de cover para contain */
-    object-position: center;
-    transition: transform 0.5s ease;
-}
+        .hero-img-bg { 
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
 
-.hero-img-desktop { 
-    display: block; 
-    width: 100%;
-    max-width: 750px; /* Limita a largura no PC para a imagem quadrada não ocupar a tela inteira */
-    margin: 0 auto;
-}
+        .hero-img-desktop { 
+            display: block; 
+            width: 100%;
+            max-width: 85%;
+            max-height: 550px;
+            object-fit: contain;
+            height: auto;
+            margin: 0 auto;
+        }
 
-.hero-img-mobile { 
-    display: none; 
-}
+        .hero-img-mobile { 
+            display: none; 
+        }
 
-@media(max-width: 768px) {
-    .hero-img-desktop { display: none !important; }
-    .hero-img-mobile { 
-        display: block !important; 
-        max-width: 100%;
-    }
-}
+        @media(max-width: 768px) {
+            .hero-img-desktop { 
+                display: none !important; 
+            }
+            
+            .hero-img-mobile { 
+                display: block !important; 
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
 
-        /* BANNER MODERNO E PROFISSIONAL */
+        /* CARROSSEL DE BANNERS COM IMAGEM E BOTÃO "CONFIRA JÁ" */
         .carousel-container { 
             width: 92%; 
             max-width: 1200px; 
             margin: 30px auto 10px; 
             border-radius: 12px; 
             overflow: hidden; 
-            background: #0a0a0c; 
+            background: #000000; 
             border: 1px solid var(--border-color); 
             position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.25);
@@ -219,89 +221,53 @@
         }
         .banner-item {
             min-width: 100%;
+            position: relative;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 40px 6%;
-            background: linear-gradient(135deg, #111115 0%, #050505 100%);
+            justify-content: center;
             cursor: pointer;
-            box-sizing: border-box;
-            position: relative;
             overflow: hidden;
         }
-        .banner-item::before {
-            content: '';
+        .banner-item img {
+    width: 100%;
+    height: 100%;
+    max-height: 480px;
+    object-fit: fill; /* Ajusta a imagem inteira dentro do banner sem cortar */
+    display: block;
+}
+        
+        .banner-action-btn {
             position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(0, 230, 118, 0.12) 0%, rgba(0,0,0,0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-        .banner-info {
-            width: 50%;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .banner-badge {
-            background: var(--accent);
-            color: #000000;
-            font-size: 0.7rem;
+            bottom: 25px;
+            right: 25px;
+            background: #000000;
+            color: #ffffff;
+            border: 2px solid var(--accent);
+            padding: 12px 24px;
+            border-radius: 30px;
             font-weight: 900;
-            padding: 5px 12px;
-            border-radius: 20px;
-            margin-bottom: 12px;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-        }
-        .banner-title {
-            font-size: 1.8rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            color: #ffffff;
-            line-height: 1.1;
-            letter-spacing: -0.5px;
-        }
-        .banner-price {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--accent);
-            margin-bottom: 18px;
-        }
-        .banner-btn {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: #ffffff;
-            color: #000000;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: 800;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
             transition: var(--transition);
+            z-index: 5;
         }
-        .banner-item:hover .banner-btn {
+        .banner-action-btn i {
+            color: var(--accent);
+            transition: transform 0.3s ease;
+        }
+        .banner-item:hover .banner-action-btn {
             background: var(--accent);
-            color: #000;
-            transform: translateX(5px);
+            color: #000000;
+            transform: scale(1.05);
         }
-        .banner-item img {
-            width: 42%;
-            max-height: 260px;
-            object-fit: contain;
-            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.6));
-            transition: var(--transition);
-            z-index: 2;
-        }
-        .banner-item:hover img {
-            transform: scale(1.05) rotate(-3deg);
+        .banner-item:hover .banner-action-btn i {
+            color: #000000;
+            transform: translateX(4px);
         }
 
         .carousel-dots {
@@ -311,13 +277,13 @@
             transform: translateX(-50%);
             display: flex;
             gap: 8px;
-            z-index: 3;
+            z-index: 6;
         }
         .dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.4);
             transition: var(--transition);
             cursor: pointer;
         }
@@ -327,15 +293,46 @@
             background: var(--accent);
         }
 
-        @media(max-width: 768px) {
-            .banner-item { flex-direction: column-reverse; text-align: center; padding: 30px 20px; }
-            .banner-item img { width: 85%; height: 180px; margin-bottom: 15px; }
-            .banner-info { width: 100%; align-items: center; }
-            .banner-title { font-size: 1.3rem; }
-            .banner-price { font-size: 1.2rem; }
+        /* BANNERS ESPECÍFICOS DE SEÇÃO */
+        .section-banner-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 35px auto 10px;
+            padding: 0 4%;
+        }
+        .section-banner-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #000;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            cursor: pointer;
+        }
+        .section-banner-card img {
+            width: 100%;
+            height: 100%;
+            max-height: 420px;
+            object-fit: fill;
+            display: block;
         }
 
-        /* Manifesto com Animação Scroll */
+        @media(max-width: 768px) {
+            .carousel-container { width: 95%; margin: 20px auto 10px; }
+            .banner-item img, .section-banner-card img {
+                object-fit: cover;
+                min-height: 180px;
+            }
+            .banner-action-btn {
+                bottom: 15px;
+                right: 15px;
+                padding: 8px 16px;
+                font-size: 0.7rem;
+            }
+            .carousel-dots { bottom: 8px; }
+        }
+
+        /* Manifesto */
         .hero-manifesto { 
             padding: 45px 6%; 
             text-align: center; 
@@ -382,7 +379,7 @@
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 0 4% 30px; }
         @media(min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 22px; } }
         
-        /* Card de Produto - Efeito Degradê / Fade-in Rápido no Scroll */
+        /* Card de Produto */
         .p-card { 
             background: var(--bg-card); 
             border: 1px solid var(--border-color); 
@@ -393,8 +390,6 @@
             justify-content: space-between; 
             position: relative; 
             cursor: pointer; 
-            
-            /* Animação Inicial de Transição ao Rolar (Degradê de Opacidade Rápido) */
             opacity: 0;
             transform: translateY(25px) scale(0.98);
             transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
@@ -430,42 +425,48 @@
             display: block;
             transition: transform 0.5s ease;
         }
-        .p-card:hover .p-card-img-box img {
-            transform: scale(1.08);
-        }
 
-        /* ESTILOS DAS TAGS / BADGES */
+        /* ESTILOS DE TAGS COM CORES REFORÇADAS */
         .product-tag {
             position: absolute;
             top: 10px;
             left: 10px;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 4px;
             font-size: 0.65rem;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             z-index: 5;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
         }
-        .tag-mais_pedido { background: #000000; color: #ffffff; }
-        .tag-esgotado { background: #e53935; color: #ffffff; }
-        .tag-novidade { background: var(--accent); color: #000000; }
+        .tag-mais_vendido, .tag-mais_pedido { 
+            background: #00e676 !important; 
+            color: #000000 !important; 
+        }
+        .tag-esgotado { 
+            background: #d32f2f !important; 
+            color: #ffffff !important; 
+        }
+        .tag-novidade { 
+            background: #29b6f6 !important; 
+            color: #ffffff !important; 
+        }
 
-        /* Sidebars Laterais com Animações */
+        /* Sidebars Laterais */
         .sidebar { position: fixed; top: 0; width: 320px; height: 100%; background: var(--bg-card); border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); z-index: 5000; transition: var(--transition); padding: 30px; box-shadow: 0 0 40px rgba(0,0,0,0.25); display: flex; flex-direction: column; justify-content: space-between; }
         #filterSide { left: -340px; } 
         #filterSide.active { left: 0; }
         #cartSide { right: -340px; } 
         #cartSide.active { right: 0; }
 
-        /* Overlay para Sidebars */
+        /* Overlay */
         .sidebar-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 4999; opacity: 0; visibility: hidden; transition: var(--transition);
         }
         .sidebar-overlay.active { opacity: 1; visibility: visible; }
 
-        /* PÁGINA DO PRODUTO OTIMIZADA PARA MOBILE E DESKTOP */
+        /* PÁGINA DO PRODUTO */
         #productPage { 
             position: fixed; 
             inset: 0; 
@@ -473,20 +474,20 @@
             z-index: 2000; 
             display: none; 
             overflow-y: auto; 
-            padding: 20px 4% 40px;
+            padding: 20px 0 0;
             -webkit-overflow-scrolling: touch;
-            animation: fadeInPage 0.3s ease-out forwards;
         }
 
-        @keyframes fadeInPage {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
+        .product-page-container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 4%;
         }
 
         .product-page-content { 
             background: var(--bg-card); 
             width: 100%; 
-            max-width: 1100px; 
             margin: 15px auto 0; 
             border-radius: 12px; 
             display: grid; 
@@ -531,8 +532,6 @@
 
         .product-details-side { padding: 30px 25px; display: flex; flex-direction: column; justify-content: flex-start; }
         .product-details-side h2 { font-weight: 900; text-transform: uppercase; font-size: 1.4rem; letter-spacing: 0.5px; line-height: 1.3; margin-bottom: 8px; }
-        @media(min-width: 768px) { .product-details-side h2 { font-size: 1.7rem; } }
-        
         .product-details-side h3 { margin: 8px 0 18px; color: var(--text-main); font-weight: 900; font-size: 1.6rem; }
 
         .size-btn { padding: 12px 5px; border: 1px solid var(--border-color); background: var(--bg-site); text-align: center; cursor: pointer; border-radius: 6px; font-weight: 700; font-size: 0.85rem; transition: var(--transition); color: var(--text-main); }
@@ -540,16 +539,22 @@
         .size-btn.selected { background: var(--primary); color: #fff !important; border-color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         
         .btn-buy-modal { width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; font-weight: 900; border-radius: 6px; cursor: pointer; margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); text-align: center; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(0,230,118,0.3); }
-        .btn-buy-modal:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,230,118,0.4); }
-        .btn-buy-modal:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; transform: none; }
+        .btn-buy-modal:hover { background: var(--accent-hover); transform: translateY(-2px); }
+        .btn-buy-modal:disabled { background: #d32f2f !important; color: #ffffff !important; cursor: not-allowed; box-shadow: none !important; transform: none !important; opacity: 0.9; }
 
         .info-accordion { margin-top: 15px; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; background: var(--bg-card); transition: var(--transition); }
         .accordion-header { padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.5px; text-transform: uppercase; transition: var(--transition); }
-        .info-accordion.active .accordion-header { background: var(--bg-site); border-bottom: 1px solid var(--border-color); }
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 20px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
         .info-accordion.active .accordion-content { padding: 15px 20px; max-height: 200px; }
 
-        /* RODAPÉ MODERNO, BONITO E FUNCIONAL */
+        /* SEÇÃO DE SUGESTÕES / VEJA TAMBÉM */
+        .related-products-section {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            width: 100%;
+        }
+
+        /* RODAPÉ */
         footer {
             background: #09090b;
             color: #ffffff;
@@ -559,198 +564,35 @@
             overflow: hidden;
         }
 
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .footer-container { max-width: 1200px; margin: 0 auto; }
+        .footer-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 40px; margin-bottom: 45px; text-align: left; }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            gap: 40px;
-            margin-bottom: 45px;
-            text-align: left;
-        }
+        @media(min-width: 600px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media(min-width: 992px) { .footer-grid { grid-template-columns: 1.4fr 0.8fr 1fr 1fr; } }
 
-        @media(min-width: 600px) {
-            .footer-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media(min-width: 992px) {
-            .footer-grid { grid-template-columns: 1.4fr 0.8fr 1fr 1fr; }
-        }
+        .footer-brand p { font-size: 0.88rem; color: #a1a1aa; line-height: 1.6; margin-top: 15px; margin-bottom: 20px; }
+        .footer-socials { display: flex; gap: 12px; }
+        .footer-socials a { width: 38px; height: 38px; border-radius: 50%; background: #18181b; color: #ffffff; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: var(--transition); font-size: 1.1rem; border: 1px solid #27272a; }
 
-        .footer-brand p {
-            font-size: 0.88rem;
-            color: #a1a1aa;
-            line-height: 1.6;
-            margin-top: 15px;
-            margin-bottom: 20px;
-        }
+        .footer-col h4 { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #ffffff; margin-bottom: 20px; position: relative; padding-bottom: 8px; }
+        .footer-col h4::after { content: ''; position: absolute; bottom: 0; left: 0; width: 30px; height: 2px; background: var(--accent); }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { font-size: 0.85rem; color: #a1a1aa; text-decoration: none; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; }
 
-        .footer-socials {
-            display: flex;
-            gap: 12px;
-        }
+        .footer-contact-item { display: flex; align-items: flex-start; gap: 12px; font-size: 0.85rem; color: #a1a1aa; margin-bottom: 14px; line-height: 1.4; }
+        .footer-contact-item i { color: var(--accent); font-size: 1.1rem; margin-top: 2px; }
 
-        .footer-socials a {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #18181b;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: var(--transition);
-            font-size: 1.1rem;
-            border: 1px solid #27272a;
-        }
+        .footer-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .badge-pill { background: #18181b; border: 1px solid #27272a; padding: 6px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; color: #d4d4d8; display: inline-flex; align-items: center; gap: 6px; }
 
-        .footer-socials a:hover {
-            background: var(--accent);
-            color: #000000;
-            transform: translateY(-3px);
-            border-color: var(--accent);
-        }
+        .footer-bottom { border-top: 1px solid #18181b; padding-top: 25px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.78rem; color: #71717a; }
+        @media(min-width: 768px) { .footer-bottom { flex-direction: row; } }
 
-        .footer-col h4 {
-            font-size: 0.95rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #ffffff;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 8px;
-        }
+        .footer-payments { display: flex; gap: 12px; font-size: 1.4rem; color: #a1a1aa; }
 
-        .footer-col h4::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 30px;
-            height: 2px;
-            background: var(--accent);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            font-size: 0.85rem;
-            color: #a1a1aa;
-            text-decoration: none;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .footer-links a:hover {
-            color: var(--accent);
-            transform: translateX(5px);
-        }
-
-        .footer-contact-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            font-size: 0.85rem;
-            color: #a1a1aa;
-            margin-bottom: 14px;
-            line-height: 1.4;
-        }
-
-        .footer-contact-item i {
-            color: var(--accent);
-            font-size: 1.1rem;
-            margin-top: 2px;
-        }
-
-        .footer-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .badge-pill {
-            background: #18181b;
-            border: 1px solid #27272a;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: #d4d4d8;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #18181b;
-            padding-top: 25px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            font-size: 0.78rem;
-            color: #71717a;
-        }
-
-        @media(min-width: 768px) {
-            .footer-bottom {
-                flex-direction: row;
-            }
-        }
-
-        .footer-payments {
-            display: flex;
-            gap: 12px;
-            font-size: 1.4rem;
-            color: #a1a1aa;
-        }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: var(--bg-card);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 990;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        }
-
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            background: var(--accent);
-            color: #000000;
-            border-color: var(--accent);
-            transform: translateY(-4px);
-        }
+        .back-to-top { position: fixed; bottom: 25px; right: 25px; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 990; opacity: 0; visibility: hidden; transition: var(--transition); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
     </style>
 </head>
 <body>
@@ -791,7 +633,7 @@
     </div>
 </div>
 
-<!-- BARRA DE SELEÇÃO DE MODELOS (AIR MAX EM PRIMEIRO LUGAR) -->
+<!-- BARRA DE SELEÇÃO DE MODELOS -->
 <div class="models-bar-container">
     <div class="models-wrapper">
         <div class="model-chip" onclick="filterByKeyword('')"><i class="fas fa-fire"></i> Todos</div>
@@ -855,16 +697,45 @@
 
 <!-- VITRINE PRINCIPAL -->
 <div id="storefrontView">
-    <!-- IMAGEM DO TOPO (HERO RESPONSIVO) -->
+    <!-- HERO RESPONSIVO -->
     <section class="london-hero">
         <img src="area037.jpg" alt="Banner Área 037 - Computador" class="hero-img-bg hero-img-desktop">
         <img src="banner2.jpg" alt="Banner Área 037 - Celular" class="hero-img-bg hero-img-mobile">
     </section>
 
-    <!-- CARROSSEL BANNERS DE PRODUTOS REDESENHADO & MODERNO -->
+    <!-- CARROSSEL PRINCIPAL COM BANNERS DE SNEAKERS & BOTÃO CONFIRA JÁ -->
     <div class="carousel-container" id="mainBanner">
-        <div class="carousel-track" id="track"></div>
-        <div class="carousel-dots" id="carouselDots"></div>
+        <div class="carousel-track" id="track">
+            <!-- BANNER 1: AIR MAX 95 -->
+            <div class="banner-item" onclick="filterByKeyword('AIR MAX')">
+                <img src="air95banner.jpg" alt="Air Max 95 Banner">
+                <div class="banner-action-btn">
+                    <span>Confira Já</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+            <!-- BANNER 2: NOCTA -->
+            <div class="banner-item" onclick="filterByKeyword('NOCTA')">
+                <img src="noctabanner.jpg" alt="Nike Nocta Banner">
+                <div class="banner-action-btn">
+                    <span>Confira Já</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+            <!-- BANNER 3: NIKE TN -->
+            <div class="banner-item" onclick="filterByKeyword('TN')">
+                <img src="tnbanner.jpg" alt="Nike TN Banner">
+                <div class="banner-action-btn">
+                    <span>Confira Já</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-dots" id="carouselDots">
+            <div class="dot active" onclick="goToSlide(0)"></div>
+            <div class="dot" onclick="goToSlide(1)"></div>
+            <div class="dot" onclick="goToSlide(2)"></div>
+        </div>
     </div>
 
     <!-- MANIFESTO -->
@@ -880,68 +751,145 @@
     </div>
 </div>
 
-<!-- PÁGINA DO PRODUTO (MODAL EXPANDIDO E TOTALMENTE ADAPTADO PARA MOBILE) -->
+<!-- PÁGINA DO PRODUTO -->
 <div id="productPage">
-    <div style="max-width: 1100px; margin: 0 auto;">
+    <div class="product-page-container">
         <button onclick="closeProductPage()" style="background:var(--bg-card); border:1px solid var(--border-color); color:var(--text-main); cursor:pointer; font-weight:800; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:8px; text-transform:uppercase; font-size:0.8rem; padding: 10px 16px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: var(--transition);">
             <i class="fas fa-arrow-left"></i> Voltar para a loja
         </button>
-    </div>
-    
-    <div class="product-page-content">
-        <div class="gallery-container">
-            <div class="main-img-wrapper" id="modalImgWrapper">
-                <img id="modalImg">
-            </div>
-            <div class="thumb-list" id="thumbList"></div>
-        </div>
         
-        <div class="product-details-side">
-            <h2 id="modalName"></h2>
-            <h3 id="modalPrice"></h3>
+        <div class="product-page-content">
+            <div class="gallery-container">
+                <div class="main-img-wrapper" id="modalImgWrapper">
+                    <img id="modalImg" alt="Imagem do produto">
+                </div>
+                <div class="thumb-list" id="thumbList"></div>
+            </div>
             
-            <p style="margin-bottom:12px; font-weight:700; font-size:0.75rem; color:var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase;">Selecione o Tamanho:</p>
-            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:15px;" id="sizes">
-                <div class="size-btn" onclick="selectSize(this)">38</div>
-                <div class="size-btn" onclick="selectSize(this)">39</div>
-                <div class="size-btn" onclick="selectSize(this)">40</div>
-                <div class="size-btn" onclick="selectSize(this)">41</div>
-                <div class="size-btn" onclick="selectSize(this)">42</div>
-                <div class="size-btn" onclick="selectSize(this)">43</div>
-            </div>
-
-            <button class="btn-buy-modal" id="btnAddToCart" onclick="confirmCart()">Adicionar ao Carrinho</button>
-
-            <div class="info-accordion">
-                <div class="accordion-header" onclick="toggleAccordion(this)">
-                    <span>Formas de Envio</span>
-                    <i class="fas fa-chevron-down"></i>
+            <div class="product-details-side">
+                <h2 id="modalName"></h2>
+                <h3 id="modalPrice"></h3>
+                
+                <p style="margin-bottom:12px; font-weight:700; font-size:0.75rem; color:var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase;">Selecione o Tamanho:</p>
+                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:15px;" id="sizes">
+                    <div class="size-btn" onclick="selectSize(this)">38</div>
+                    <div class="size-btn" onclick="selectSize(this)">39</div>
+                    <div class="size-btn" onclick="selectSize(this)">40</div>
+                    <div class="size-btn" onclick="selectSize(this)">41</div>
+                    <div class="size-btn" onclick="selectSize(this)">42</div>
+                    <div class="size-btn" onclick="selectSize(this)">43</div>
                 </div>
-                <div class="accordion-content">
-                    <p>📦 <b>Correios (Sedex / PAC):</b> Enviamos código de rastreio via WhatsApp imediatamente após postagem.</p>
-                    <p style="margin-top:6px;">🚀 <b>Motoboy:</b> Entrega rápida na sua região (consulte taxas locais).</p>
-                </div>
-            </div>
 
-            <div class="info-accordion">
-                <div class="accordion-header" onclick="toggleAccordion(this)">
-                    <span>Formas de Pagamento</span>
-                    <i class="fas fa-chevron-down"></i>
+                <button class="btn-buy-modal" id="btnAddToCart" onclick="confirmCart()">Adicionar ao Carrinho</button>
+
+                <div class="info-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Formas de Envio</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>📦 <b>Correios (Sedex / PAC):</b> Enviamos código de rastreio via WhatsApp imediatamente após postagem.</p>
+                        <p style="margin-top:6px;">🚀 <b>Motoboy:</b> Entrega rápida na sua região (consulte taxas locais).</p>
+                    </div>
                 </div>
-                <div class="accordion-content">
-                    <p>⚡ <b>Pix:</b> Pagamento simplificado com aprovação instantânea.</p>
-                    <p style="margin-top:6px;">💳 <b>Cartão de Crédito:</b> Parcelamento facilitado via link seguro de pagamento.</p>
+
+                <div class="info-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Formas de Pagamento</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>⚡ <b>Pix:</b> Pagamento simplificado com aprovação instantânea.</p>
+                        <p style="margin-top:6px;">💳 <b>Cartão de Crédito:</b> Parcelamento facilitado via link seguro de pagamento.</p>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- SEÇÃO DE SUGESTÕES DE PRODUTOS NA PÁGINA DO PRODUTO -->
+        <div class="related-products-section">
+            <h2 class="brand-title scroll-reveal">QUEM VIU, VIU TAMBÉM</h2>
+            <div class="grid" id="relatedProductsGrid"></div>
+        </div>
     </div>
+
+    <!-- RODAPÉ NA PÁGINA DO PRODUTO -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="logo2.png" alt="Área 037 Logo" style="height: 45px; filter: brightness(0) invert(1);">
+                    <p>Referência no streetwear e cultura sneakerhead. Desde 2022 entregando estilo, exclusividade e qualidade com envio rápido para todo o Brasil.</p>
+                    <div class="footer-socials">
+                        <a href="https://instagram.com/area.037" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/5537998744383" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navegação</h4>
+                    <ul class="footer-links">
+                        <li><a href="javascript:void(0)" onclick="closeProductPage(); scrollToTop();"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Início</a></li>
+                        <li><a href="javascript:void(0)" onclick="filterByKeyword('AIR MAX')"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Air Max 95</a></li>
+                        <li><a href="javascript:void(0)" onclick="filterByKeyword('SHOX')"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Nike Shox</a></li>
+                        <li><a href="javascript:void(0)" onclick="filterByKeyword('JORDAN')"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Air Jordan</a></li>
+                        <li><a href="javascript:void(0)" onclick="scrollToQuemSomos()"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Quem Somos</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Atendimento</h4>
+                    <div class="footer-contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <div>
+                            <strong style="color:#fff; display:block;">WhatsApp:</strong>
+                            <a href="https://wa.me/5537998744383" target="_blank" style="color:#a1a1aa; text-decoration:none;">(37) 99874-4383</a>
+                        </div>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong style="color:#fff; display:block;">E-mail:</strong>
+                            <span>contato@area037.com</span>
+                        </div>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong style="color:#fff; display:block;">Horário:</strong>
+                            <span>Seg a Sáb: 09h às 20h</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Garantia & Envio</h4>
+                    <p style="font-size: 0.82rem; color: #a1a1aa; margin-bottom: 15px;">Compra 100% segura com rastreamento direto e suporte dedicado.</p>
+                    <div class="footer-badges">
+                        <span class="badge-pill"><i class="fas fa-truck" style="color:var(--accent);"></i> Envios Brasil</span>
+                        <span class="badge-pill"><i class="fas fa-shield-alt" style="color:var(--accent);"></i> 100% Seguro</span>
+                        <span class="badge-pill"><i class="fas fa-bolt" style="color:var(--accent);"></i> Pix Instantâneo</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Área 037 Streetwear. Todos os direitos reservados.</p>
+                <div class="footer-payments">
+                    <i class="fab fa-cc-visa" title="Visa"></i>
+                    <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+                    <i class="fas fa-pix" title="Pix"></i>
+                    <i class="fas fa-barcode" title="Boleto"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
 </div>
 
-<!-- RODAPÉ COMPLETO, MODERNO E FUNCIONAL -->
-<footer>
+<!-- RODAPÉ PRINCIPAL (DA VITRINE) -->
+<footer id="mainFooter">
     <div class="footer-container">
         <div class="footer-grid">
-            <!-- COLUNA 1: MARCA & SOBRE -->
             <div class="footer-brand">
                 <img src="logo2.png" alt="Área 037 Logo" style="height: 45px; filter: brightness(0) invert(1);">
                 <p>Referência no streetwear e cultura sneakerhead. Desde 2022 entregando estilo, exclusividade e qualidade com envio rápido para todo o Brasil.</p>
@@ -951,7 +899,6 @@
                 </div>
             </div>
 
-            <!-- COLUNA 2: NAVEGAÇÃO RÁPIDA -->
             <div class="footer-col">
                 <h4>Navegação</h4>
                 <ul class="footer-links">
@@ -963,7 +910,6 @@
                 </ul>
             </div>
 
-            <!-- COLUNA 3: ATENDIMENTO & CONTATO -->
             <div class="footer-col">
                 <h4>Atendimento</h4>
                 <div class="footer-contact-item">
@@ -989,7 +935,6 @@
                 </div>
             </div>
 
-            <!-- COLUNA 4: SEGURANÇA & GARANTIA -->
             <div class="footer-col">
                 <h4>Garantia & Envio</h4>
                 <p style="font-size: 0.82rem; color: #a1a1aa; margin-bottom: 15px;">Compra 100% segura com rastreamento direto e suporte dedicado.</p>
@@ -1001,7 +946,6 @@
             </div>
         </div>
 
-        <!-- LINHA INFERIOR DO FOOTER -->
         <div class="footer-bottom">
             <p>&copy; 2026 Área 037 Streetwear. Todos os direitos reservados.</p>
             <div class="footer-payments">
@@ -1023,7 +967,6 @@
             if(splash) { splash.style.opacity = '0'; splash.style.visibility = 'hidden'; }
         }, 1200);
         
-        // Executa verificação inicial de animações no scroll
         handleScrollAnimations();
     });
 
@@ -1055,64 +998,54 @@
     }
     trackPageView();
 
-    // AIR MAX 95 COLOCADO NO TOPO DAS CATEGORIAS DA NIKE
     const nikeCategories = [
         { key: "AIR MAX", label: "NIKE AIR MAX (95 / OUTROS)" },
         { key: "SHOX", label: "NIKE SHOX" },
         { key: "DUNK", label: "NIKE DUNK" },
-        { key: "NOCTA", label: "NIKE NOCTA" },
+        { key: "NOCTA", label: "NIKE NOCTA", banner: "noctabanner.jpg" },
         { key: "JORDAN", label: "AIR JORDAN" },
         { key: "AIR FORCE", label: "NIKE AIR FORCE" },
         { key: "DN", label: "NIKE DN" },
-        { key: "TN", label: "NIKE TN / PLUS" }
+        { key: "TN", label: "NIKE TN / PLUS", banner: "tnbanner.jpg" }
     ];
 
     db.ref("produtos").on("value", snap => {
         const data = snap.val();
         allProducts = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
         
-        renderProductBanners(allProducts);
         organizeGrid(allProducts);
         renderDynamicFilters();
     });
 
-    function getTagHTML(tag) {
-        if (!tag || tag === 'nenhuma') return '';
+    /* LÓGICA DE TRATAMENTO DE TAGS E CORES */
+    function getTagHTML(tagRaw) {
+        if (!tagRaw || tagRaw === 'nenhuma' || tagRaw === 'none' || tagRaw === '') return '';
         
+        const cleanTag = String(tagRaw).toLowerCase().trim();
         let label = '';
-        if (tag === 'mais_pedido') label = 'Mais Pedido';
-        else if (tag === 'esgotado') label = 'Esgotado';
-        else if (tag === 'novidade') label = 'Novidade';
-        else label = tag;
+        let tagClass = '';
 
-        return `<span class="product-tag tag-${tag}">${label}</span>`;
+        if (cleanTag === 'mais_vendido' || cleanTag === 'mais vendido' || cleanTag === 'mais_pedido' || cleanTag === 'mais pedido') {
+            label = 'Mais Vendido';
+            tagClass = 'tag-mais_vendido';
+        } else if (cleanTag === 'esgotado') {
+            label = 'Esgotado';
+            tagClass = 'tag-esgotado';
+        } else if (cleanTag === 'novidade') {
+            label = 'Novidade';
+            tagClass = 'tag-novidade';
+        } else {
+            label = tagRaw;
+            tagClass = `tag-${cleanTag.replace(/\s+/g, '_')}`;
+        }
+
+        return `<span class="product-tag ${tagClass}">${label}</span>`;
     }
 
-    function renderProductBanners(products) {
-        const track = document.getElementById('track');
-        const dotsContainer = document.getElementById('carouselDots');
-        if (!products || products.length === 0) return;
-
-        const featured = products.slice(0, 3);
-        
-        track.innerHTML = featured.map((p, i) => `
-            <div class="banner-item" onclick="openProductPage('${p.id}')">
-                <div class="banner-info">
-                    <span class="banner-badge">🔥 Destaque #${i + 1}</span>
-                    <h2 class="banner-title">${p.name}</h2>
-                    <p class="banner-price">R$ ${Number(p.price).toLocaleString('pt-br', {minimumFractionDigits:2})}</p>
-                    <div class="banner-btn">
-                        <span>Garantir Agora</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-                <img src="${p.img}" alt="${p.name}">
-            </div>
-        `).join('');
-
-        dotsContainer.innerHTML = featured.map((_, i) => `
-            <div class="dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>
-        `).join('');
+    function isProductEsgotado(p) {
+        if(!p || !p.tag) return false;
+        const tag = String(p.tag).toLowerCase().trim();
+        return tag === 'esgotado';
     }
 
     function organizeGrid(list) {
@@ -1132,7 +1065,17 @@
         nikeCategories.forEach(cat => {
             const filtered = nikeProducts.filter(p => p.nameUpper.includes(cat.key));
             if(filtered.length > 0) {
-                nikeSections.innerHTML += `<h2 class="brand-title">${cat.label}</h2><div class="grid">${filtered.map(p => card(p)).join('')}</div>`;
+                let bannerHTML = '';
+                if(cat.banner) {
+                    bannerHTML = `
+                        <div class="section-banner-container">
+                            <div class="section-banner-card" onclick="filterByKeyword('${cat.key}')">
+                                <img src="${cat.banner}" alt="${cat.label} Banner">
+                            </div>
+                        </div>
+                    `;
+                }
+                nikeSections.innerHTML += `${bannerHTML}<h2 class="brand-title">${cat.label}</h2><div class="grid">${filtered.map(p => card(p)).join('')}</div>`;
                 nikeProducts = nikeProducts.filter(p => !filtered.includes(p));
             }
         });
@@ -1158,7 +1101,6 @@
             othersWrapper.innerHTML += `<h2 class="brand-title">${brand}</h2><div class="grid">${brandProducts.map(p => card(p)).join('')}</div>`;
         });
 
-        // Trigger para recalcular visibilidade do scroll dos novos cards
         setTimeout(handleScrollAnimations, 50);
     }
 
@@ -1219,7 +1161,25 @@
         document.getElementById('manifestoSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    /* ABRIR E FECHAR A PÁGINA DO PRODUTO */
+    /* RENDERIZAR SUGESTÕES DE PRODUTOS */
+    function renderRelatedProducts(currentProduct) {
+        const container = document.getElementById('relatedProductsGrid');
+        if(!container) return;
+
+        let related = allProducts.filter(p => p.id !== currentProduct.id);
+        let sameBrand = related.filter(p => p.brand && currentProduct.brand && p.brand.trim().toUpperCase() === currentProduct.brand.trim().toUpperCase());
+        
+        let displayList = [];
+        if(sameBrand.length >= 4) {
+            displayList = sameBrand.sort(() => 0.5 - Math.random()).slice(0, 4);
+        } else {
+            let remaining = related.filter(p => !sameBrand.includes(p)).sort(() => 0.5 - Math.random());
+            displayList = [...sameBrand, ...remaining].slice(0, 4);
+        }
+
+        container.innerHTML = displayList.map(p => card(p)).join('');
+    }
+
     function openProductPage(id) {
         selectedProduct = allProducts.find(p => p.id === id);
         if(!selectedProduct) return;
@@ -1238,11 +1198,13 @@
         }
 
         const btnBuy = document.getElementById('btnAddToCart');
-        if (selectedProduct.tag === 'esgotado') {
+        if (isProductEsgotado(selectedProduct)) {
             btnBuy.innerText = 'Produto Esgotado';
+            btnBuy.setAttribute('disabled', 'true');
             btnBuy.disabled = true;
         } else {
             btnBuy.innerText = 'Adicionar ao Carrinho';
+            btnBuy.removeAttribute('disabled');
             btnBuy.disabled = false;
         }
         
@@ -1267,18 +1229,24 @@
                 thumbList.innerHTML += `<img src="${photoUrl}" class="thumb-img ${isActive}" onclick="changeProductPhoto(this, '${photoUrl}')">`;
             });
         }
+
+        renderRelatedProducts(selectedProduct);
         
         document.getElementById('storefrontView').style.display = 'none';
+        document.getElementById('mainFooter').style.display = 'none';
         document.getElementById('productPage').style.display = 'block';
         
         const productModal = document.getElementById('productPage');
         productModal.scrollTop = 0;
         window.scrollTo(0, 0);
+
+        setTimeout(handleScrollAnimations, 50);
     }
 
     function closeProductPage() { 
         document.getElementById('productPage').style.display = 'none'; 
         document.getElementById('storefrontView').style.display = 'block';
+        document.getElementById('mainFooter').style.display = 'block';
         selectedSize = null; 
         document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
         document.querySelectorAll('.info-accordion').forEach(a => { a.classList.remove('active'); a.querySelector('.accordion-content').style.maxHeight = null; });
@@ -1296,7 +1264,9 @@
     function selectSize(btn) { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedSize = btn.innerText; }
 
     function confirmCart() {
-        if(selectedProduct && selectedProduct.tag === 'esgotado') return alert("Este produto está esgotado!");
+        if(selectedProduct && isProductEsgotado(selectedProduct)) {
+            return alert("Este produto está esgotado e não pode ser adicionado ao carrinho!");
+        }
         if(!selectedSize) return alert("Selecione o tamanho!");
         cart.push({...selectedProduct, size: selectedSize, cartId: Date.now()});
         updateCart();
@@ -1377,7 +1347,6 @@
         organizeGrid(filtered);
     }
 
-    /* Controle do Carrossel de Banners */
     let slide = 0;
     function goToSlide(index) {
         slide = index;
@@ -1398,11 +1367,9 @@
         }
     }, 5000);
 
-    /* ANIMAÇÃO DE SCROLL (DEGRADÊ E FADE-IN RÁPIDO DOS PRODUTOS) */
     function handleScrollAnimations() {
         const triggerBottom = window.innerHeight * 0.92;
 
-        // Cards de Produtos
         const cards = document.querySelectorAll('.p-card');
         cards.forEach(card => {
             const cardTop = card.getBoundingClientRect().top;
@@ -1411,7 +1378,6 @@
             }
         });
 
-        // Títulos de Seção e Manifesto
         const animElements = document.querySelectorAll('.brand-title, .hero-manifesto');
         animElements.forEach(el => {
             const elTop = el.getBoundingClientRect().top;
@@ -1420,9 +1386,8 @@
             }
         });
 
-        // Botão Voltar ao Topo
         const backBtn = document.getElementById('backToTop');
-        if(window.scrollY > 400) {
+        if(window.scrollY > 400 || (document.getElementById('productPage').style.display === 'block' && document.getElementById('productPage').scrollTop > 400)) {
             backBtn.classList.add('visible');
         } else {
             backBtn.classList.remove('visible');
@@ -1430,10 +1395,15 @@
     }
 
     function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if(document.getElementById('productPage').style.display === 'block') {
+            document.getElementById('productPage').scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     }
 
     window.addEventListener('scroll', handleScrollAnimations);
+    document.getElementById('productPage').addEventListener('scroll', handleScrollAnimations);
 </script>
 </body>
 </html>
